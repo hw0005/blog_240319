@@ -1,4 +1,4 @@
-package com.blog.post;
+package com.blog.post.mapper;
 
 import java.util.List;
 import java.util.Map;
