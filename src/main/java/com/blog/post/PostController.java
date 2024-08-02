@@ -8,10 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class PostController {
 	
-	// html 나오게 하는 테스트 POST
-	@GetMapping("/default")
-	public String defa() {
-		return "layout/defaultLayout";
-	}
+	
 	
 }

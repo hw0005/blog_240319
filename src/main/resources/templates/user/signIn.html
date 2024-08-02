@@ -3,12 +3,82 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/defaultLayout}">
-<section layout:fragment="content" class="contents d-flex justify-content-center">
-	<h1>안녕</h1>
-</section>
 
+<section layout:fragment="content" class="contents d-flex justify-content-center">
+	<div class="shadow-box">
+		<div class="sign-in-box justify-content-center align-items-center m-5">
+				<div class="mb-4">
+					<h1>로그인</h1>
+				</div>
+				<!-- 엔터로 submit이 될 수 있게 form 태그를 만들어줌-->
+				<form id="loginForm" action="/user/sign-in" method="post">
+					<!-- id -->
+					<div class="input-group mb-3">
+						<div class="input-group-prepend">
+							<span class="input-group-text">ID</span>
+						</div>
+						<input type="text" class="form-control col-8" id="loginId" name="loginId" placeholder="아이디를 입력하세요">
+					</div>
+					
+					<!-- 비밀번호 -->
+					<div class="input-group mb-3">
+						<div class="input-group-prepend">
+							<span class="input-group-text">PW</span>
+						</div>
+						<input type="password" class="form-control col-8" id="password" name="password" placeholder="비밀번호를 입력하세요">
+					</div>
+					<!-- 로그인, 회원가입 버튼 -->
+					<input type="submit" class="btn btn-block btn-warning col-9" value="로그인">
+					<a class="btn btn-block btn-info col-9" href="/user/sign-up-view">회원가입</a>
+	
+				</form>
+		</div>
+	</div>
+</section>
 <th:block layout:fragment="script">
     <script>
-
+		$(document).ready(function(e) {
+			// alert("응");
+			
+			
+			// 로그인 하기			
+			$("form").on('submit', function(e) {
+			e.preventDefault();
+			//alert("로그인");
+			
+			// validation
+			let loginId = $("#loginId").val().trim();
+			//console.log(loginId);
+			let password = $("#password").val().trim();
+			//console.log(password);
+			
+			if (!loginId) {
+				alert("아이디를 입력하세요");
+				return false;
+			}
+			if (!password) {
+				alert("비밀번호를 입력하세요");
+				return false;
+			}
+				
+			
+			// AJAX로 로그인해서 값 불러오기
+			
+			let url = $(this).attr('action');
+			//console.log(url);
+			let params = $(this).serialize();
+			//console.log(params);
+			
+			$.post(url, params) // request
+			.done(function(data) { // response
+				if (data.code == 200) {
+					// 메인 블로그 화면으로 이동
+					location.href="/blog/main-blog-view"
+				} else {
+					alert(data.error_message);
+				}
+			}); // 로그인 폼 끝
+			}); // 로그인 끝
+		});	// document 끝
     </script>
 </th:block>
