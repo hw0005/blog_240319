@@ -1,6 +1,5 @@
 package com.blog.user;
 
-import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,14 +22,61 @@ public class userRestController {
 	@Autowired
 	private UserBO userBO;
 	
-	// 아이디 중복확인 API
-	public Map<String, Object> isDuplicatedId() {
+	/**
+	 * 아이디 중복확인 API
+	 * @param loginId
+	 * @return
+	 */
+	@RequestMapping("/is-duplicated-id")
+	public Map<String, Object> isDuplicatedId(
+			@RequestParam("loginId") String loginId) {
 		
+		// db 조회
+		UserEntity user = userBO.getUserEntityByLoginId(loginId);
+		
+		// 응답값
 		Map<String, Object> result = new HashMap<>();
-		
+		if (user != null) {
+			result.put("code", 200);
+			result.put("is_duplicated_id", true);
+		} else {
+			result.put("is_duplicated_id", false);
+		}
 		return result;
 	}
 	
+	/**
+	 * 회원가입 API
+	 * @param loginId
+	 * @param password
+	 * @param name
+	 * @param email
+	 * @return
+	 */
+	
+	@PostMapping("/sign-up")
+	public Map<String, Object> signUp(
+			@RequestParam("loginId") String loginId,
+			@RequestParam("password") String password,
+			@RequestParam("name") String name,
+			@RequestParam("email") String email) {
+		
+		// 해싱된 비밀번호
+		String hashedPassword = EncryptUtils.encrypt(password);
+		
+		// db insert
+		UserEntity user = userBO.addUser(loginId, hashedPassword, name, email);
+		
+		Map<String, Object> result = new HashMap<>();
+		if (user != null) {
+			result.put("code", 200);
+			result.put("result", "성공");
+		} else {
+			result.put("code", 500);
+			result.put("error_message", "회원가입에 실패했습니다.");
+		}
+		return result;
+	}
 	
 	
 	//로그인 API
@@ -41,12 +87,7 @@ public class userRestController {
 			HttpSession session) {
 		
 		// 해싱된 비밀번호
-		String hashedPassword = null;
-		try {
-			hashedPassword = EncryptUtils.createSalt(password);
-		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
-		}
+		String hashedPassword = EncryptUtils.encrypt(password);
 		
 		// db select
 		UserEntity user = userBO.getUserEntityByLoginIdPassword(loginId, hashedPassword);
@@ -56,12 +97,17 @@ public class userRestController {
 		if (user != null) { // 성공
 			// session에 사용자 정보 담기
 			session.setAttribute("userId", user.getId());
+			session.setAttribute("userLoginId", user.getLoginId());
+			session.setAttribute("userName", user.getName());
 			
-			
+			result.put("code", 200);
+			result.put("result", "성공");
+		} else {
+			result.put("code", 400);
+			result.put("error_message", "존재하지 않은 사용자입니다.");
 		}
-		result.put("code", 200);
-		result.put("result", "성공");
 		return result;
 	}
+	
 	
 }
