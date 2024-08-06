@@ -1,11 +1,17 @@
 @charset "UTF-8";
 
-a, a:hover {text-decoration:none; color:#000;}
+a {text-decoration:none; color:#000;}
+a:hover {color: #ea00de;}
 
 header {height:100px;}
 .content {min-height:500px;}
 footer {height:100px;}
-
+	
 .shadow-box {width:550px; background-color:#ebebeb; margin-top:20px; box-shadow:5px 5px 5px 5px #BDC0C0;}
 .sign-in-box {width:600px;}
 .sign-up-box {width:600px;}
+
+.write-box {width:600px;}
+
+.my-blog-box {width:700px; min-height:500px; background-color: #808080;}
+.following-blog-box {width:700px; min-height:500px; background-color: #00ff00;}

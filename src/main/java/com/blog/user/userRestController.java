@@ -79,7 +79,14 @@ public class userRestController {
 	}
 	
 	
-	//로그인 API
+	/**
+	 * 로그인 API
+	 * @param loginId
+	 * @param password
+	 * @param session
+	 * @return
+	 */
+	
 	@PostMapping("/sign-in")
 	public Map<String, Object> signIn(
 			@RequestParam("loginId") String loginId,

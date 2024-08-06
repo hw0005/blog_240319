@@ -51,7 +51,7 @@
 
 <th:block layout:fragment="script">
     <script>
-		$(document).ready(function(e) {
+		$(document).ready(function() {
 			// 중복확인 버튼
 			$("#loginIdCheckBtn").on('click', function() {
 				//alert("응");
@@ -86,7 +86,7 @@
 			}); // 로그인 중복확인 버튼 끝
 			
 			// 회원가입 버튼
-			$("#signUpBtn").on('submit', function(e) {
+			$("form").on('submit', function(e) {
 				e.preventDefault();
 				//alert("회원가입");
 				
@@ -137,7 +137,7 @@
 				$.post(url, params) // AJAX Request
 				.done(function(data) { //AJAX Response Success
 					if (data.code == 200) {
-						alert("가입을 환영합니다. 로그인해주세요");
+						alert("가입을 환영합니다. 로그인 창으로 이동합니다.");
 						location.href="/user/sign-in-view";
 					}
 					else {

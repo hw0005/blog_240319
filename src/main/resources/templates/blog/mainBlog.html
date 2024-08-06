@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html 
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/defaultLayout}">
+<section layout:fragment="content" class="contents">
+	<!-- 글쓰기 영역(로그인 된 사람만 보임) -->
+	<div class="d-flex justify-content-center">
+		<!-- 계정 검색 -->
+		<a href="#" id="searchBtn"><img class="m-4" width="40" height="40" src="https://cdn.pixabay.com/photo/2022/03/06/06/39/search-7050945_960_720.png"></a>
+		<!-- 팔로워 요청 -->
+		<a href="#" id="followRequestBtn"><img class="m-4" width="40" height="40" src="https://cdn.pixabay.com/photo/2016/03/31/19/14/list-1294835_1280.png"></a>
+		
+		<div th:if="${session.userId != null}" class="write-box border rounded m-3">
+			<textarea id="writeTextArea" placeholder="내용을 입력해주세요" class="w-100 border-0"></textarea>
+				
+			<div class="d-flex justify-content-between">
+				<div class="file-upload d-flex">
+					<!-- file 태그를 숨겨두고 이미지를 클릭하면 파일을 클릭한 것과 같은 효과를 준다. -->
+					<input type="file" id="file" accept=".jpg, .png, .gif" class="d-none">
+					
+					<!-- 이미지에 마우스 올리면 마우스 커서가 link로 변경 -->
+					<a href="#" id="fileUploadBtn"><img width="35" src="https://cdn4.iconfinder.com/data/icons/ionicons/512/icon-image-512.png"></a>
+						
+					<div id="fileName" class="ml-2"></div>
+				</div>
+				<button id="writeBtn" class="btn btn-info">업로드</button>
+			</div>
+		</div>
+	</div>
+	
+	<!-- 축약화면을 만들 거다 왼: 내 글, 오른: 팔로잉들의 글 -->
+	<div class="d-flex justify-content-center my-5">
+		<!-- 내 글 화면 -->
+		<div class="my-blog-box">
+			<h3><a href="/blog/my-blog-view">내가 쓴 글</a></h3>
+			
+			
+		</div>
+		<!-- 팔로잉 글 화면 -->
+		<div class="following-blog-box">
+			<h3><a href="/blog/following-blog-view">팔로잉의 글</a></h3>
+			
+			
+		</div>
+	</div>
+</section>
+
+<th:block layout:fragment="script">
+    <script>
+
+    </script>
+</th:block>

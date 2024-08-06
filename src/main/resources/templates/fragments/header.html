@@ -10,14 +10,14 @@
 			<!-- 로그인 영역 -->
 			<div>
 				<!-- 로그인 시 -->
-				<div>
-					<span th:text="'님 안녕하세요'"></span>
-					<a href="#" class="text-white">로그아웃</a>
+				<div th:if="${session.userId != null}">
+					<span th:text="${session.userName} + '님 안녕하세요'" class="text-warning"></span>
+					<a href="/user/sign-out" class="text-white">로그아웃</a>
 				</div>
 				
 				<!-- 비로그인 시 -->
-				<div>
-					<a href="#" class="text-white">로그인</a>
+				<div th:unless="${session.userId != null}">
+					<a href="/user/sign-in-view" class="text-white">로그인</a>
 				</div>
 			</div>
 			
