@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/blog")
-public class blogController {
+public class BlogController {
 	
 	@RequestMapping("/main-blog-view")
 	public String mainBlogView() {

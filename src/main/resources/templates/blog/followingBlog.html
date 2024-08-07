@@ -12,7 +12,8 @@
 		<a href="#" id="followRequestBtn"><img class="m-4" width="40" height="40" src="https://cdn.pixabay.com/photo/2016/03/31/19/14/list-1294835_1280.png"></a>
 		
 		<div th:if="${session.userId != null}" class="write-box border rounded m-3">
-			<textarea id="writeTextArea" placeholder="내용을 입력해주세요" class="w-100 border-0"></textarea>
+			<input type="text" id="writeTextAreaSubject" placeholder="제목을 입력해주세요" class="w-100 border-0 form-control mb-2 bg-light">
+			<textarea id="writeTextAreaContent" placeholder="내용을 입력해주세요" class="w-100 border-0 form-control"></textarea>
 				
 			<div class="d-flex justify-content-between">
 				<div class="file-upload d-flex">
@@ -32,16 +33,11 @@
 	<!-- 글 -->
 	<div class="d-flex justify-content-center my-5">
 		<div class="following-blog-box">
+			<!-- 글 카드 시작 -->
 			<div class="card border rounded mt-3">
-			
 				<!-- 글쓴이, 더보기(삭제) -->
 				<div class="p-2 d-flex justify-content-between">
 					<span class="font-weight-bold">글쓴이</span>
-					
-					<!-- 더보기 ...(로그인 된 사람과 글쓴이 정보 일치할 때 보이게) -->
-					<a href="#" class="more-btn">
-						<img src="https://www.iconninja.com/files/860/824/939/more-icon.png" width="30">
-					</a>
 				</div>
 				
 				<!-- 본문 이미지 -->
@@ -54,12 +50,52 @@
 					<span class="font-weight-bold">글쓴이</span>
 					<span>글 내용</span>
 				</div>
+			</div> <!-- 글 card 끝 -->
+
+			
+			<!-- 좋아요, 댓글 갯수 알려주는 카드 시작-->
+			<div class="card border rounded mt-3 d-flex">
+				<!-- 좋아요 -->
+				<div class="card-like m-3">
+					<a href="#" class="like-btn">
+						<img src="https://www.iconninja.com/files/214/518/441/heart-icon.png" width="18" height="18" alt="empty heart">
+						<img src="https://cdn.pixabay.com/photo/2016/04/24/05/52/heart-1348868_1280.png" width="18" height="18" alt="filled heart">
+					</a>
+						<span>좋아요 n개</span>
+					<!-- 댓글 -->
+					<img src="https://cdn.pixabay.com/photo/2016/02/02/05/53/button-1174805_960_720.png" width="18" height="18"><span>댓글 n개</span>
+				</div>
+			</div> <!-- 좋아요, 댓글 개수 카드 끝 -->
+			
+			<!-- 댓글 목록 카드 시작 -->
+			<div class="card border rounded mt-3">
+				<!-- 댓글 제목 -->
+				<div class="card-comment-title border-bottom">
+					<div class="font-weight-bold ml-3 mb-1">댓글</div>
+				</div>
 				
-			</div> <!-- card 끝 -->
+				<!-- 댓글 목록 -->
+				<div class="card-comment-list m-2">
+					<!-- 댓글들 -->
+					<div class="card-comment m-1">
+						<span class="font-weight-bold">댓글쓴이</span>
+						<span>댓글 내용</span>
+						
+						<!-- 댓글 삭제(자신의 댓글만 가능) -->
+						<a href="#" class="comment-del-btn">
+							<img src="https://www.iconninja.com/files/603/22/506/x-icon.png" width="10" height="10">
+						</a>
+					</div>
+					
+					<!-- 댓글 쓰기 -->
+					<div class="comment-write d-flex border-top mt-2">
+						<input type="text" class="comment-input form-control border-0 mr-2" placeholder="댓글 달기">
+						<button type="button" class="comment-btn btn btn-light col-1">게시</button>
+					</div>
+				</div> <!-- 댓글 끝 -->
+			</div> <!-- 댓글 카드 끝 -->
 		</div> <!-- following-blog-box 끝 -->
 	</div>
-
-	
 </section>
 
 <th:block layout:fragment="script">

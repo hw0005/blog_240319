@@ -12,7 +12,8 @@
 		<a href="#" id="followRequestBtn"><img class="m-4" width="40" height="40" src="https://cdn.pixabay.com/photo/2016/03/31/19/14/list-1294835_1280.png"></a>
 		
 		<div th:if="${session.userId != null}" class="write-box border rounded m-3">
-			<textarea id="writeTextArea" placeholder="내용을 입력해주세요" class="w-100 border-0"></textarea>
+			<input type="text" id="writeTextAreaSubject" placeholder="제목을 입력해주세요" class="w-100 border-0 form-control mb-2 bg-light">
+			<textarea id="writeTextAreaContent" placeholder="내용을 입력해주세요" class="w-100 border-0 form-control"></textarea>
 				
 			<div class="d-flex justify-content-between">
 				<div class="file-upload d-flex">
@@ -32,8 +33,8 @@
 	<!-- 글 -->
 	<div class="d-flex justify-content-center my-5">
 		<div class="my-blog-box">
+			<!-- 글 카드 시작 -->
 			<div class="card border rounded mt-3">
-			
 				<!-- 글쓴이, 더보기(삭제) -->
 				<div class="p-2 d-flex justify-content-between">
 					<span class="font-weight-bold">글쓴이</span>
@@ -54,8 +55,49 @@
 					<span class="font-weight-bold">글쓴이</span>
 					<span>글 내용</span>
 				</div>
+			</div> <!-- 글 card 끝 -->
+			
+			<!-- 좋아요, 댓글 갯수 알려주는 카드 시작-->
+			<div class="card border rounded mt-3 d-flex">
+				<!-- 좋아요 -->
+				<div class="card-like m-3">
+					<a href="#" class="like-btn">
+						<img src="https://www.iconninja.com/files/214/518/441/heart-icon.png" width="18" height="18" alt="empty heart">
+						<img src="https://cdn.pixabay.com/photo/2016/04/24/05/52/heart-1348868_1280.png" width="18" height="18" alt="filled heart">
+					</a>
+						<span>좋아요 n개</span>
+					<!-- 댓글 -->
+					<img src="https://cdn.pixabay.com/photo/2016/02/02/05/53/button-1174805_960_720.png" width="18" height="18"><span>댓글 n개</span>
+				</div>
+			</div> <!-- 좋아요, 댓글 개수 카드 끝 -->
+			
+			<!-- 댓글 목록 카드 시작 -->
+			<div class="card border rounded mt-3">
+				<!-- 댓글 제목 -->
+				<div class="card-comment-title border-bottom">
+					<div class="font-weight-bold ml-3 mb-1">댓글</div>
+				</div>
 				
-			</div> <!-- card 끝 -->
+				<!-- 댓글 목록 -->
+				<div class="card-comment-list m-2">
+					<!-- 댓글들 -->
+					<div class="card-comment m-1">
+						<span class="font-weight-bold">댓글쓴이</span>
+						<span>댓글 내용</span>
+						
+						<!-- 댓글 삭제(자신의 댓글만 가능) -->
+						<a href="#" class="comment-del-btn">
+							<img src="https://www.iconninja.com/files/603/22/506/x-icon.png" width="10" height="10">
+						</a>
+					</div>
+					
+					<!-- 댓글 쓰기 -->
+					<div class="comment-write d-flex border-top mt-2">
+						<input type="text" class="comment-input form-control border-0 mr-2" placeholder="댓글 달기">
+						<button type="button" class="comment-btn btn btn-light col-1">게시</button>
+					</div>
+				</div> <!-- 댓글 끝 -->
+			</div> <!-- 댓글 카드 끝 -->
 		</div> <!-- my-blog-box 끝 -->
 	</div>
 	
@@ -63,6 +105,110 @@
 
 <th:block layout:fragment="script">
     <script>
-
+		$(document).ready(function() {
+			//alert("응");
+			
+			// 이미지 a태그 => 숨겨져 있는 id="file"움직임
+			$("#fileUploadBtn").on('click', function(e) {
+				e.preventDefault();
+				//alert("클릭");
+				$("#file").click(); // file 클릭
+			}); // 파일업로드 버튼 = id="file" 끝
+			
+			
+			// 파일이 선택될 때 1. 유효성 체크 2. 파일명 노출
+			$("#file").on('change', function(e) {
+				// 취소 눌렀을 때 초기화
+				let file = e.target.files[0];
+				if (file == null) {
+					alert("선택 취소를 눌렀습니다. 이미지를 다시 선택하여 주십시오.");
+					$("#file").val("");
+					$("#fileName").text("");
+					return;
+				}
+				
+				// 파일 잘 오는지 확인
+				let fileName = e.target.files[0].name;
+				console.log(fileName);
+				
+				// 1. 확장자 validation
+				let ext = fileName.split(".").pop().toLowerCase();
+				console.log(ext);
+				
+				if (ext != "png" && ext != "gif" && ext != "jpg") {
+					alert("이미지만 업로드할 수 있습니다.");
+					$("#file").val(""); // 파일 태그에 올라온 것 제거
+					$("#fileName").text(""); // 보여지고 있는 파일명 초기화
+					return;
+				}
+				
+				// 2. 파일명 노출
+				$("#fileName").text(fileName);
+				
+			}); // 파일 선택될 때 끝
+			
+			// 글쓰기
+			$("#writeBtn").on('click', function() {
+				//alert("응");
+				
+				let subject = $("#writeTextAreaSubject").val().trim();
+				let content = $("#writeTextAreaContent").val().trim();
+				let file = $("#file").val();
+				//console.log(subject);
+				//console.log(content);
+				//console.log(file); // C:\fakepath\pngtree-vector-chat-icon-png-image_322158.jpg
+				
+				if (!subject) {
+					alert("제목을 입력하세요");
+					return;
+				}
+				if (!content) {
+					alert("내용을 입력하세요");
+					return;
+				}
+				if (!file) {
+					alert("이미지를 선택하세요");
+					return;
+				}
+				
+				// 파일이 업로드 된 경우 확장자 체크
+				let ext = file.split(".").pop().toLowerCase();
+				//console.log(ext);
+				if ($.inArray(ext, ['gif', 'png', 'jpg', 'jpeg']) == -1) {
+					alert("gif, png, jpg, jpeg 파일만 업로드 할 수 있습니다.");
+					$("#file").val(""); // 파일을 비운다.
+					return;
+				}
+				
+				// 폼 태그를 자바스크립트에서 하기
+				let formData = new formData();
+				formData.append("subject", subject);
+				formData.append("content", content);
+				formData.append("file", $('#file')[0].files[0]); //$('#file')[0]은 첫번째 input file 태그를 의미, files[0]는 업로드된 첫번째 파일
+				
+				
+				// ajax에 formData 전송
+				$.ajax({
+					type: "post"
+					, url: "/post/create"
+					, data: formData
+					, enctype: "multipart/form-data"
+					, processData: false
+					, contentType: false
+					, success:function(data) {
+						if (data.code == 200) {
+							location.reload();
+						} else if (data.code == 403) { // 비로그인일 때
+							location.href="/user/sign-in-view";
+						} else {
+							alert(data.error_message);
+						}
+					}
+					, error:function(e) {
+						alert("글 업로드에 실패했습니다.");
+					}
+				}); // ajax 끝
+			}); // 글쓰기 버튼 끝
+		}); // document 끝
     </script>
 </th:block>

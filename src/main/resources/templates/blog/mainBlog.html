@@ -10,9 +10,10 @@
 		<a href="#" id="searchBtn"><img class="m-4" width="40" height="40" src="https://cdn.pixabay.com/photo/2022/03/06/06/39/search-7050945_960_720.png"></a>
 		<!-- 팔로워 요청 -->
 		<a href="#" id="followRequestBtn"><img class="m-4" width="40" height="40" src="https://cdn.pixabay.com/photo/2016/03/31/19/14/list-1294835_1280.png"></a>
-		
+
 		<div th:if="${session.userId != null}" class="write-box border rounded m-3">
-			<textarea id="writeTextArea" placeholder="내용을 입력해주세요" class="w-100 border-0"></textarea>
+			<input type="text" id="writeTextAreaSubject" placeholder="제목을 입력해주세요" class="w-100 border-0 form-control mb-2 bg-light">
+			<textarea id="writeTextAreaContent" placeholder="내용을 입력해주세요" class="w-100 border-0 form-control bg-transparent"></textarea>
 				
 			<div class="d-flex justify-content-between">
 				<div class="file-upload d-flex">
@@ -27,15 +28,34 @@
 				<button id="writeBtn" class="btn btn-info">업로드</button>
 			</div>
 		</div>
-	</div>
-	
+	</div> <!-- 글쓰기 영역 끝 -->
 	<!-- 축약화면을 만들 거다 왼: 내 글, 오른: 팔로잉들의 글 -->
 	<div class="d-flex justify-content-center my-5">
 		<!-- 내 글 화면 -->
 		<div class="my-blog-box">
 			<h3><a href="/blog/my-blog-view">내가 쓴 글</a></h3>
-			
-			
+			<div class="card border rounded mt-3">
+				<!-- 글쓴이, 더보기(삭제) -->
+				<div class="p-2 d-flex justify-content-between">
+					<span class="font-weight-bold">글쓴이</span>
+					
+					<!-- 더보기 ...(로그인 된 사람과 글쓴이 정보 일치할 때 보이게) -->
+					<a href="#" class="more-btn">
+						<img src="https://www.iconninja.com/files/860/824/939/more-icon.png" width="30">
+					</a>
+				</div>
+				
+				<!-- 본문 이미지 -->
+				<div class="card-img">
+					<img class="w-100" alt="본문 이미지" src="https://cdn.pixabay.com/photo/2022/03/06/06/39/search-7050945_960_720.png">
+				</div>
+				
+				<!-- 글 -->
+				<div class="card-post m-3">
+					<span class="font-weight-bold">글쓴이</span>
+					<span>글 내용</span>
+				</div>
+			</div> <!-- card 끝 -->	
 		</div>
 		<!-- 팔로잉 글 화면 -->
 		<div class="following-blog-box">

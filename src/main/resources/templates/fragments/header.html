@@ -4,7 +4,12 @@
 		<div class="h-100 d-flex justify-content-between align-items-center mx-4">
 		 	<!-- 로고 영역 -->
 			<div>
-				<h1>BLOG</h1>
+				<div th:if="${session.userId != null}">
+					<a href="/blog/main-blog-view"><h1>BLOG</h1></a>
+				</div>
+				<div th:unless="${session.userId != null}">
+					<a href="/user/sign-in-view"><h1>BLOG</h1></a>
+				</div>
 			</div>
 			
 			<!-- 로그인 영역 -->
