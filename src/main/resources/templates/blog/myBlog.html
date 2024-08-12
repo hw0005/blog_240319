@@ -149,7 +149,7 @@
 			
 			// 글쓰기
 			$("#writeBtn").on('click', function() {
-				//alert("응");
+				alert("응");
 				
 				let subject = $("#writeTextAreaSubject").val().trim();
 				let content = $("#writeTextAreaContent").val().trim();
@@ -181,7 +181,7 @@
 				}
 				
 				// 폼 태그를 자바스크립트에서 하기
-				let formData = new formData();
+				let formData = new FormData();
 				formData.append("subject", subject);
 				formData.append("content", content);
 				formData.append("file", $('#file')[0].files[0]); //$('#file')[0]은 첫번째 input file 태그를 의미, files[0]는 업로드된 첫번째 파일

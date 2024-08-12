@@ -1,5 +1,7 @@
 package com.blog.post.bo;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,8 +12,8 @@ public class PostImageBO {
 	@Autowired
 	private PostMapper postMapper;
 	
-	public void addPostImage(int postId, String imageUrl) {
-		postMapper.insertPostImage(postId, imageUrl);
+	public void addImage(int userId, int postId, List<String> imageUrl) {
+		postMapper.insertImage(userId, postId, imageUrl);
 	}
 	
 	

@@ -10,9 +10,10 @@ import org.apache.ibatis.annotations.Param;
 public interface PostMapper {
 	public List<Map<String, Object>> selectPostListTest();
 	
-	public void insertPostImage(
+	public void insertImage(
+			@Param("userId") int userId,
 			@Param("postId") int postId,
-			@Param("imageUrl") String imageUrl);
+			@Param("imageUrl") List<String> imageUrl);
 	
 	
 	

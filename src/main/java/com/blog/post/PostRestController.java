@@ -22,7 +22,6 @@ public class PostRestController {
 	@Autowired
 	private PostBO postBO;
 	
-	
 	// 글생성 API
 	@PostMapping("/create")
 	public Map<String, Object> postCreate(
@@ -38,7 +37,7 @@ public class PostRestController {
 		Map<String, Object> result = new HashMap<>();
 		if (userId != null) {
 			result.put("code", 403);
-			result.put("result", "로그인 되지 않습니다.");
+			result.put("error_message", "로그인이 되어있지 않습니다.");
 		}
 		
 		// DB INSERT
