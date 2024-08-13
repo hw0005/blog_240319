@@ -1,5 +1,7 @@
 package com.blog.user.bo;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,15 @@ public class UserBO {
 		return userRepository.findByLoginId(loginId);
 	}
 	
+	public UserEntity getUserEntityByLoginIdPassword(String loginId, String password) {
+		return userRepository.findByLoginIdAndPassword(loginId, password);
+	}
+	
+	public UserEntity getUserEntityById(int userId) {
+		return userRepository.findById(userId).orElse(null);
+	}
+	
+	
 	public UserEntity addUser(String loginId, String password, String name, String email) {
 		return userRepository.save(UserEntity.builder()
 				.loginId(loginId)
@@ -25,8 +36,7 @@ public class UserBO {
 				.build());
 	}
 	
-	public UserEntity getUserEntityByLoginIdPassword(String loginId, String password) {
-		return userRepository.findByLoginIdAndPassword(loginId, password);
-	}
+	
+
 	
 }

@@ -18,6 +18,7 @@
 			<div class="d-flex justify-content-between">
 				<div class="file-upload d-flex">
 					<!-- file 태그를 숨겨두고 이미지를 클릭하면 파일을 클릭한 것과 같은 효과를 준다. -->
+					<!-- 태그를 바꾸면 다중 이미지 선택이 가능하다. 파일명이 길면 잘리는 것을 대비해서 view를 바꿔야 함 -->
 					<input type="file" id="file" accept=".jpg, .png, .gif" class="d-none">
 					
 					<!-- 이미지에 마우스 올리면 마우스 커서가 link로 변경 -->
@@ -32,12 +33,15 @@
 	
 	<!-- 글 -->
 	<div class="d-flex justify-content-center my-5">
-		<div class="my-blog-box">
+		<div class="my-blog-box" th:each="cardView : ${cardViewList}">
 			<!-- 글 카드 시작 -->
 			<div class="card border rounded mt-3">
+				<div class="p-2 d-flex">
+					<span class="font-weight-bold" th:text=${cardView.post.subject}>글제목</span>
+				</div>
 				<!-- 글쓴이, 더보기(삭제) -->
 				<div class="p-2 d-flex justify-content-between">
-					<span class="font-weight-bold">글쓴이</span>
+					<span class="font-weight-bold" th:text=${cardView.user.name}>글쓴이</span>
 					
 					<!-- 더보기 ...(로그인 된 사람과 글쓴이 정보 일치할 때 보이게) -->
 					<a href="#" class="more-btn">
@@ -47,7 +51,7 @@
 				
 				<!-- 본문 이미지 -->
 				<div class="card-img">
-					<img class="w-100" alt="본문 이미지" src="https://cdn.pixabay.com/photo/2022/03/06/06/39/search-7050945_960_720.png">
+					<img class="w-100" alt="본문 이미지" th:src="${cardView.postImage.imageUrl}">
 				</div>
 				
 				<!-- 글 -->

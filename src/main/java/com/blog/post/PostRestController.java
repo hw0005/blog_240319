@@ -37,14 +37,13 @@ public class PostRestController {
 		Map<String, Object> result = new HashMap<>();
 		if (userId != null) {
 			result.put("code", 403);
-			result.put("error_message", "로그인이 되어있지 않습니다.");
+			result.put("result", "로그인이 되지 않습니다.");
 		}
 		
 		// DB INSERT
 		postBO.addPost(userId, userLoginId, subject, content, file);
 		result.put("code", 200);
 		result.put("result", "성공");
-		
 		
 		return result;
 	}

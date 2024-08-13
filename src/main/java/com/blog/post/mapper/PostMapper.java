@@ -6,6 +6,8 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import com.blog.post.domain.PostImage;
+
 @Mapper
 public interface PostMapper {
 	public List<Map<String, Object>> selectPostListTest();
@@ -13,8 +15,9 @@ public interface PostMapper {
 	public void insertImage(
 			@Param("userId") int userId,
 			@Param("postId") int postId,
-			@Param("imageUrl") List<String> imageUrl);
+			@Param("imageUrl") String imageUrl);
 	
+	public PostImage selectImageUrlByPostId(int postId);
 	
 	
 }
