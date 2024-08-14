@@ -33,7 +33,6 @@ public class BlogController {
 		//  로그인 여부 확인
 		Integer userId = (Integer)session.getAttribute("userId");
 		
-		
 		List<CardView> cardViewList = blogBO.generateCardViewList(userId);
 		model.addAttribute("cardViewList", cardViewList);
 		

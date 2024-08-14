@@ -3,7 +3,7 @@
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
  <mapper namespace="com.blog.post.mapper.PostMapper">
  
- 	<select id="selectImageUrlByPostId" parameterType="int" resultType="com.blog.post.domain.PostImage">
+ 	<select id="selectImageUrlListByPostId" parameterType="int" resultType="com.blog.post.domain.PostImage">
  		SELECT
  			`id`
 			, `userId`

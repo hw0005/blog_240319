@@ -41,8 +41,7 @@ public class BlogBO {
 			card.setPost(post);
 			
 			//글 이미지
-			PostImage postImageUrl = postImageBO.selectImageUrlByPostId(card.getPost().getId());
-			card.setPostImage(postImageUrl);
+			List<PostImage> postImageUrlList = postImageBO.selectImageUrlListByPostId(card.getPost().getId());
 			
 			//글쓴이
 			UserEntity user = userBO.getUserEntityById(card.getPost().getUserId());

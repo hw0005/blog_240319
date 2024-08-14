@@ -15,49 +15,52 @@
 			<input type="text" id="writeTextAreaSubject" placeholder="제목을 입력해주세요" class="w-100 border-0 form-control mb-2 bg-light">
 			<textarea id="writeTextAreaContent" placeholder="내용을 입력해주세요" class="w-100 border-0 form-control"></textarea>
 				
-			<div class="d-flex justify-content-between">
+			<div class="d-flex justify-content-between file-upload-box">
 				<div class="file-upload d-flex">
 					<!-- file 태그를 숨겨두고 이미지를 클릭하면 파일을 클릭한 것과 같은 효과를 준다. -->
 					<!-- 태그를 바꾸면 다중 이미지 선택이 가능하다. 파일명이 길면 잘리는 것을 대비해서 view를 바꿔야 함 -->
-					<input type="file" id="file" accept=".jpg, .png, .gif" class="d-none">
 					
+					<!-- ~~외 n개 나오게 하기 -->
+				    <input type='file' id="file" accept=".jpg, .png, .gif" class="d-none" multiple/>
+							
 					<!-- 이미지에 마우스 올리면 마우스 커서가 link로 변경 -->
 					<a href="#" id="fileUploadBtn"><img width="35" src="https://cdn4.iconfinder.com/data/icons/ionicons/512/icon-image-512.png"></a>
-						
+								
 					<div id="fileName" class="ml-2"></div>
 				</div>
-				<button id="writeBtn" class="btn btn-info">업로드</button>
+					<button id="writeBtn" class="btn btn-info">업로드</button>
 			</div>
 		</div>
 	</div>
 	
 	<!-- 글 -->
 	<div class="d-flex justify-content-center my-5">
-		<div class="my-blog-box" th:each="cardView : ${cardViewList}">
+		<div class="my-blog-box">
 			<!-- 글 카드 시작 -->
-			<div class="card border rounded mt-3">
+			<div class="card border rounded mt-3" th:each="cardView : ${cardViewList}">
 				<div class="p-2 d-flex">
-					<span class="font-weight-bold" th:text=${cardView.post.subject}>글제목</span>
+					<span class="font-weight-bold" th:text="${cardView.post.subject}">글제목</span>
 				</div>
 				<!-- 글쓴이, 더보기(삭제) -->
 				<div class="p-2 d-flex justify-content-between">
-					<span class="font-weight-bold" th:text=${cardView.user.name}>글쓴이</span>
+					<span class="font-weight-bold" th:text="${cardView.user.name}">글쓴이</span>
 					
-					<!-- 더보기 ...(로그인 된 사람과 글쓴이 정보 일치할 때 보이게) -->
-					<a href="#" class="more-btn">
+					<!-- 더보기 ... 로그인된 사람 글쓴이 정보 일치 -->
+					<a th:if="${session.userId == cardView.post.userId}" href="#" class="more-btn">
 						<img src="https://www.iconninja.com/files/860/824/939/more-icon.png" width="30">
 					</a>
 				</div>
 				
 				<!-- 본문 이미지 -->
+				<!-- 버튼을 눌러서 이미지를 어떻게 뿌릴 것인지 고민을 해봐야 한다. -->
 				<div class="card-img">
-					<img class="w-100" alt="본문 이미지" th:src="${cardView.postImage.imageUrl}">
+					<img th:src="${cardView.postImage}" class="w-100" alt="본문 이미지">
 				</div>
 				
 				<!-- 글 -->
 				<div class="card-post m-3">
-					<span class="font-weight-bold">글쓴이</span>
-					<span>글 내용</span>
+					<span class="font-weight-bold" th:text="${cardView.user.name}">글쓴이</span>
+					<span th:text="${cardView.post.content}">글 내용</span>
 				</div>
 			</div> <!-- 글 card 끝 -->
 			
@@ -112,6 +115,9 @@
 		$(document).ready(function() {
 			//alert("응");
 			
+			// 이미지 파일을 담아놓을 배열
+			var inputFileList = new Array();
+			
 			// 이미지 a태그 => 숨겨져 있는 id="file"움직임
 			$("#fileUploadBtn").on('click', function(e) {
 				e.preventDefault();
@@ -149,11 +155,29 @@
 				// 2. 파일명 노출
 				$("#fileName").text(fileName);
 				
+				// 3. 이미지 파일 선택 최대 5개
+				let files = e.target.files;
+				let filesArr = Array.prototype.slice.call(files);
+				console.log(filesArr);
+				
+				// validation
+				if (filesArr.length > 5) {
+					alert("이미지는 최대 5개까지 업로드 가능합니다.");
+					$("#file").val(""); // 파일 태그에 올라온 것 제거
+					$("#fileName").text(""); // 보여지고 있는 파일명 초기화
+					return;
+				}
+				
+				filesArr.forEach(function(f) {
+					inputFileList.push(f);	
+				}); // 파일 가져오기 배열 끝
+				
+				
 			}); // 파일 선택될 때 끝
 			
 			// 글쓰기
 			$("#writeBtn").on('click', function() {
-				alert("응");
+				//alert("응");
 				
 				let subject = $("#writeTextAreaSubject").val().trim();
 				let content = $("#writeTextAreaContent").val().trim();
@@ -188,7 +212,12 @@
 				let formData = new FormData();
 				formData.append("subject", subject);
 				formData.append("content", content);
-				formData.append("file", $('#file')[0].files[0]); //$('#file')[0]은 첫번째 input file 태그를 의미, files[0]는 업로드된 첫번째 파일
+				//formData.append("file", $('#file')[0].files[0]); //$('#file')[0]은 첫번째 input file 태그를 의미, files[0]는 업로드된 첫번째 파일
+				
+				console.log(inputFileList);
+				for (let i = 0; i < inputFileList.length; i++) {
+				　　　　formData.append("file", inputFileList[i]);  //배열에서 이미지들을 꺼내 폼 객체에 담는다.
+				}
 				
 				
 				// ajax에 formData 전송
