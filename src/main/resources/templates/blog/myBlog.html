@@ -52,9 +52,18 @@
 				</div>
 				
 				<!-- 본문 이미지 -->
-				<!-- 버튼을 눌러서 이미지를 어떻게 뿌릴 것인지 고민을 해봐야 한다. -->
-				<div class="card-img">
-					<img th:src="${cardView.postImage}" class="w-100" alt="본문 이미지">
+				<div class="d-flex">
+					<button type="button" id="prev" class="col-1 p-0">이전</button>
+					<div>
+						<div class="card-img w-100 col-10" th:each="postImageUrl, a : ${cardView.postImage}">
+						<!-- 화면에 나오게 하려면
+						4개: 4 - 3 = size() - (size() - 1)
+						 -->
+							<img id="img" th:if="${a.current}" th:src="${postImageUrl.imageUrl}" th:data-post-img="${cardView.PostImage.postId}" alt="블로그 사진">
+							<th:block th:if="${a.current}" th:text="${postImageUrl.imageUrl}"></th:block>
+						</div>
+					</div>
+					<button type="button" id="next" class="col-1 p-0">다음</button>
 				</div>
 				
 				<!-- 글 -->
@@ -139,11 +148,11 @@
 				
 				// 파일 잘 오는지 확인
 				let fileName = e.target.files[0].name;
-				console.log(fileName);
+				//console.log(fileName);
 				
 				// 1. 확장자 validation
 				let ext = fileName.split(".").pop().toLowerCase();
-				console.log(ext);
+				//console.log(ext);
 				
 				if (ext != "png" && ext != "gif" && ext != "jpg") {
 					alert("이미지만 업로드할 수 있습니다.");
@@ -158,6 +167,7 @@
 				// 3. 이미지 파일 선택 최대 5개
 				let files = e.target.files;
 				let filesArr = Array.prototype.slice.call(files);
+				console.log(files);
 				console.log(filesArr);
 				
 				// validation
@@ -166,6 +176,9 @@
 					$("#file").val(""); // 파일 태그에 올라온 것 제거
 					$("#fileName").text(""); // 보여지고 있는 파일명 초기화
 					return;
+				}
+				if (files.length <= 5) {
+					$("#fileName").text(fileName + " 외 " + (files.length - 1) + "개");
 				}
 				
 				filesArr.forEach(function(f) {
@@ -242,6 +255,36 @@
 					}
 				}); // ajax 끝
 			}); // 글쓰기 버튼 끝
+			
+            // 이미지 교체
+            let img = [$("#img").data("post-img")];
+			console.log(img);
+            let currentIndex = 0;
+            
+            $('#prev').on('click', function() {
+                currentIndex--;
+                //alert(index);
+                $("#img").removeClass("d-none");
+                if (currentIndex < 0) {
+                    currentIndex = img.length - 1;
+                    $("#img").addClass("d-none");
+                }
+
+                $('#img').attr('src', img[currentIndex]);
+            });
+
+            $('#next').on('click', function(){
+                currentIndex++;
+                $("#img").removeClass("d-none");
+                
+                if (currentIndex > img.length - 1) {
+                    currentIndex = 0;
+                    $("#img").addClass("d-none");
+                }
+
+                $('#img').attr('src', img[currentIndex]);
+            });
+            
 		}); // document 끝
     </script>
 </th:block>

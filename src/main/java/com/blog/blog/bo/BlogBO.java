@@ -42,6 +42,7 @@ public class BlogBO {
 			
 			//글 이미지
 			List<PostImage> postImageUrlList = postImageBO.selectImageUrlListByPostId(card.getPost().getId());
+			card.setPostImage(postImageUrlList);
 			
 			//글쓴이
 			UserEntity user = userBO.getUserEntityById(card.getPost().getUserId());
