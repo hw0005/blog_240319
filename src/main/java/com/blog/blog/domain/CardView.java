@@ -2,6 +2,7 @@ package com.blog.blog.domain;
 
 import java.util.List;
 
+import com.blog.comment.domain.CommentView;
 import com.blog.post.domain.PostImage;
 import com.blog.post.entity.PostEntity;
 import com.blog.user.entity.UserEntity;
@@ -21,10 +22,8 @@ public class CardView {
 	// 이미지 정보
 	private List<PostImage> postImage;
 	
-	// 이미지 URL가져옴.
-	
-	
 	// 댓글 갯수
+	private List<CommentView> commentList;
 	
 	// 좋아요 갯수
 	

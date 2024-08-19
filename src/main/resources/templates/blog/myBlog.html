@@ -35,9 +35,9 @@
 	
 	<!-- 글 -->
 	<div class="d-flex justify-content-center my-5">
-		<div class="my-blog-box">
+		<div class="my-blog-box" th:each="cardView : ${cardViewList}">
 			<!-- 글 카드 시작 -->
-			<div class="card border rounded mt-3" th:each="cardView : ${cardViewList}">
+			<div class="card border rounded mt-3">
 				<div class="p-2 d-flex">
 					<span class="font-weight-bold" th:text="${cardView.post.subject}">글제목</span>
 				</div>
@@ -53,17 +53,25 @@
 				
 				<!-- 본문 이미지 -->
 				<div class="d-flex">
-					<button type="button" id="prev" class="col-1 p-0">이전</button>
 					<div>
-						<div class="card-img w-100 col-10" th:each="postImageUrl, a : ${cardView.postImage}">
-						<!-- 화면에 나오게 하려면
-						4개: 4 - 3 = size() - (size() - 1)
-						 -->
-							<img id="img" th:if="${a.current}" th:src="${postImageUrl.imageUrl}" th:data-post-img="${cardView.PostImage.postId}" alt="블로그 사진">
-							<th:block th:if="${a.current}" th:text="${postImageUrl.imageUrl}"></th:block>
+						<div id="carouselExampleFade" class="carousel slide carousel-fade card-img w-100 col-10" data-ride="carousel">
+							  <div class="carousel-inner">
+							    <div class="carousel-item active" th:each="postImageUrl, a : ${cardView.postImage}">
+							    	<!-- 이미지 애니메이션 관련한 라이브러리 찾아보기(자바스크립트 -->
+							    	<img id="img" th:src="${postImageUrl.imageUrl}" th:data-image-url="${postImageUrl.imageUrl}" alt="블로그 사진">
+							    	<span th:text="${postImageUrl.imageUrl}"></span>
+							    </div>
+							  </div>
+							  <button class="carousel-control-prev" type="button" data-target="#carouselExampleFade" data-slide="prev">
+							    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+							    <span id="prev" class="sr-only">Previous</span>
+							  </button>
+							  <button class="carousel-control-next" type="button" data-target="#carouselExampleFade" data-slide="next">
+							    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+							    <span id="next" class="sr-only">Next</span>
+							  </button>
 						</div>
 					</div>
-					<button type="button" id="next" class="col-1 p-0">다음</button>
 				</div>
 				
 				<!-- 글 -->
@@ -97,12 +105,12 @@
 				<!-- 댓글 목록 -->
 				<div class="card-comment-list m-2">
 					<!-- 댓글들 -->
-					<div class="card-comment m-1">
-						<span class="font-weight-bold">댓글쓴이</span>
-						<span>댓글 내용</span>
+					<div class="card-comment m-1" th:each="commentView : ${cardView.commentList}">
+						<span class="font-weight-bold" th:text="${commentView.user.name}">댓글쓴이</span>
+						<span th:text="${commentView.comment.content}">댓글 내용</span>
 						
 						<!-- 댓글 삭제(자신의 댓글만 가능) -->
-						<a href="#" class="comment-del-btn">
+						<a href="#" class="comment-del-btn" th:if="${session.userId == commentView.comment.userId}" th:data-comment-id="${commentView.comment.id}">
 							<img src="https://www.iconninja.com/files/603/22/506/x-icon.png" width="10" height="10">
 						</a>
 					</div>
@@ -110,7 +118,7 @@
 					<!-- 댓글 쓰기 -->
 					<div class="comment-write d-flex border-top mt-2">
 						<input type="text" class="comment-input form-control border-0 mr-2" placeholder="댓글 달기">
-						<button type="button" class="comment-btn btn btn-light col-1">게시</button>
+						<button type="button" class="comment-btn btn btn-light col-1" th:data-post-id="${cardView.post.id}" th:data-user-id="${session.userId}">게시</button>
 					</div>
 				</div> <!-- 댓글 끝 -->
 			</div> <!-- 댓글 카드 끝 -->
@@ -121,11 +129,11 @@
 
 <th:block layout:fragment="script">
     <script>
+    	
 		$(document).ready(function() {
 			//alert("응");
-			
 			// 이미지 파일을 담아놓을 배열
-			var inputFileList = new Array();
+			let inputFileList = new Array();
 			
 			// 이미지 a태그 => 숨겨져 있는 id="file"움직임
 			$("#fileUploadBtn").on('click', function(e) {
@@ -256,34 +264,76 @@
 				}); // ajax 끝
 			}); // 글쓰기 버튼 끝
 			
+			// 댓글 게시
+			$(".comment-btn").on('click', function() {
+				let userId = $(this).data("user-id");
+				if (!userId) {
+					// 비로그인
+					alert("로그인을 해주세요.");
+					location.href="/user/sign-in-view";
+					return;
+				}
+				
+				let postId = $(this).data("post-id");
+				//alert(postId);
+				
+				let content = $(this).siblings("input").val().trim();
+				console.log(content);
+				
+				if (!content) {
+					alert("댓글 내용을 입력하세요.");
+					return;
+				}
+				
+				$.ajax({
+					type:"post"
+					, url:"/comment/create"
+					, data:{"postId":postId, "content":content}
+					, success:function(data) {
+						if(data.code == 200) {
+							location.reload(true);
+						} else if (data.code == 403) {
+							alert(data.error_message);
+							loaction.href="/user/sign-in-view";
+						} else {
+							alert(data.error_message);
+						}
+					}
+					, error:function(e) {
+						alert("댓글 쓰기에 실패했습니다.");
+					}
+					
+				});
+			}); // 댓글 게시 버튼 끝
+			
+			
+			
+			
+			
             // 이미지 교체
-            let img = [$("#img").data("post-img")];
-			console.log(img);
-            let currentIndex = 0;
-            
-            $('#prev').on('click', function() {
+			/*let image = [$("#img").data("image-url")];
+			console.log(image);
+			
+           	let currentIndex = 0;*/
+            /*$('#prev').on('click', function() {
                 currentIndex--;
-                //alert(index);
-                $("#img").removeClass("d-none");
                 if (currentIndex < 0) {
                     currentIndex = img.length - 1;
-                    $("#img").addClass("d-none");
                 }
 
                 $('#img').attr('src', img[currentIndex]);
-            });
-
-            $('#next').on('click', function(){
+            });*/
+            /*$('#next').on('click', function(){
                 currentIndex++;
-                $("#img").removeClass("d-none");
-                
                 if (currentIndex > img.length - 1) {
                     currentIndex = 0;
-                    $("#img").addClass("d-none");
                 }
 
                 $('#img').attr('src', img[currentIndex]);
-            });
+            });*/
+            
+            
+            
             
 		}); // document 끝
     </script>

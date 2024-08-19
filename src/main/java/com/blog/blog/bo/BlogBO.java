@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.blog.blog.domain.CardView;
+import com.blog.comment.bo.CommentBO;
+import com.blog.comment.domain.CommentView;
 import com.blog.post.bo.PostBO;
 import com.blog.post.bo.PostImageBO;
 import com.blog.post.domain.PostImage;
@@ -24,6 +26,9 @@ public class BlogBO {
 	
 	@Autowired
 	private PostImageBO postImageBO;
+	
+	@Autowired
+	private CommentBO commentBO;
 	
 	// input: userId, output: List<CardView>
 	public List<CardView> generateCardViewList(Integer userId) {
@@ -49,6 +54,8 @@ public class BlogBO {
 			card.setUser(user);
 			
 			// 댓글, 댓글 갯수
+			List<CommentView> commetViewList = commentBO.generateCommentViewListByPostId(post.getId());
+			card.setCommentList(commetViewList);
 			
 			
 			// 좋아요 갯수
