@@ -22,12 +22,18 @@ public class CardView {
 	// 이미지 정보
 	private List<PostImage> postImage;
 	
-	// 댓글 갯수
+	// 댓글 달기
 	private List<CommentView> commentList;
 	
-	// 좋아요 갯수
+	// 댓글 갯수
 	
-	// 좋아요 여부
+	
+	// 좋아요 갯수
+	private int likeCount;
+	
+	// 좋아요 여부 채워짐
+	private boolean filledLike; //채워져있으면 true 아니면 false
+
 	
 	// 팔로우 요청
 	

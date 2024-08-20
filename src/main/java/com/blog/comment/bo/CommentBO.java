@@ -20,10 +20,12 @@ public class CommentBO {
 	@Autowired
 	private UserBO userBO;
 	
+	// 댓글 추가
 	public void addComment(int userId, int postId, String content) {
 		commentMapper.insertComment(userId, postId, content);
 	}
 	
+	// 댓글 보여주기(뿌려주기 -> CardView에)
 	public List<CommentView> generateCommentViewListByPostId(int postId) {
 		List<CommentView> commentViewList = new ArrayList<>();
 		
@@ -36,7 +38,7 @@ public class CommentBO {
 			// 댓글 1개
 			commentView.setComment(comment);
 			
-			// 댓글쓰니
+			// 댓글쓴이
 			UserEntity user = userBO.getUserEntityById(comment.getUserId());
 			commentView.setUser(user);
 			
@@ -45,5 +47,13 @@ public class CommentBO {
 		}
 		return commentViewList;
 	}
+	
+	// 댓글 삭제
+	public void deleteCommentById(int id) {
+		commentMapper.deleteCommentById(id);
+	}
+	
+	
+	
 	
 }
