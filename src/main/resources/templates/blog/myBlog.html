@@ -56,10 +56,12 @@
 					<div>
 						<div id="carouselExampleFade" class="carousel slide carousel-fade card-img w-100 col-10" data-ride="carousel">
 							  <div class="carousel-inner">
-							    <div class="carousel-item active" th:each="postImageUrl, a : ${cardView.postImage}">
-							    	<!-- 이미지 애니메이션 관련한 라이브러리 찾아보기(자바스크립트 -->
-							    	<img id="img" th:src="${postImageUrl.imageUrl}" th:data-image-url="${postImageUrl.imageUrl}" alt="블로그 사진">
-							    	<span th:text="${postImageUrl.imageUrl}"></span>
+							    <div class="carousel-item active">
+							    	<th:block th:each="postImageUrl, a : ${cardView.postImage}">
+								    	<!-- 이미지 애니메이션 관련한 라이브러리 찾아보기(자바스크립트 -->
+								    	<img id="img" th:src="${postImageUrl.imageUrl}" th:data-image-url="${postImageUrl.imageUrl}" alt="블로그 사진">
+								    	<span th:text="${postImageUrl.imageUrl}"></span>
+							    	</th:block>
 							    </div>
 							  </div>
 							  <button class="carousel-control-prev" type="button" data-target="#carouselExampleFade" data-slide="prev">
@@ -132,7 +134,7 @@
     
     	//let a = /*[[${cardViewList}]]*/c;
     	//console.log(a);
-    	//console.log(/*[[${cardViewList}]]*/"a");
+    	console.log(/*[[${cardViewList}]]*/"a");
     	//postImageUrl, a : ${cardView.postImage}
     	
     	
