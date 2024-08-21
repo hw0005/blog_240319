@@ -57,9 +57,9 @@ public class BlogBO {
 			UserEntity user = userBO.getUserEntityById(card.getPost().getUserId());
 			card.setUser(user);
 			
-			// 댓글
-			
 			// 댓글 갯수
+			
+			// 댓글 나오기
 			List<CommentView> commetViewList = commentBO.generateCommentViewListByPostId(post.getId());
 			card.setCommentList(commetViewList);
 			

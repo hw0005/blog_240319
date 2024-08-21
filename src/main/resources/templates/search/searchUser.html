@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html 
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/defaultLayout}">
+<section layout:fragment="content" class="contents d-flex justify-content-center">
+	<div>
+		<!-- 검색 바탕 -->
+		<div class="search-box d-flex">
+			<!-- 돋보기 이미지 -->
+			<div class="d-flex align-items-center ml-3">
+				<img alt="검색" width="35" src="https://cdn.pixabay.com/photo/2022/03/06/06/39/search-7050945_960_720.png">
+				<!-- text -->
+				<div class="d-flex ml-4">
+					<input type="text" class="form-control col-12" placeholder="유저 검색">
+					<button id="searchBtn" class="form-control bg-success col-3">검색</button>
+				</div>
+			</div>
+		</div>
+		
+		<!-- 유저 조회값 -->
+		<div class="search-result-box">
+			<div class="ml-3">
+				<h1>안녕</h1>
+			</div>
+		</div>
+		
+		
+	</div>
+	
+	
+	
+</section>
+
+<th:block layout:fragment="script">
+    <script>
+
+    </script>
+</th:block>

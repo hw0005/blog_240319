@@ -34,8 +34,9 @@ public class CardView {
 	// 좋아요 여부 채워짐
 	private boolean filledLike; //채워져있으면 true 아니면 false
 
-	
 	// 팔로우 요청
+	
+	
 	
 	
 }

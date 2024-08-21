@@ -7,9 +7,9 @@
 	<!-- 글쓰기 영역(로그인 된 사람만 보임) -->
 	<div class="d-flex justify-content-center">
 		<!-- 계정 검색 -->
-		<a href="#" id="searchBtn"><img class="m-4" width="40" height="40" src="https://cdn.pixabay.com/photo/2022/03/06/06/39/search-7050945_960_720.png"></a>
+		<a href="/search/user-view" id="searchBtn"><img class="m-4" width="40" height="40" src="https://cdn.pixabay.com/photo/2022/03/06/06/39/search-7050945_960_720.png"></a>
 		<!-- 팔로워 요청 -->
-		<a href="#" id="followRequestBtn"><img class="m-4" width="40" height="40" src="https://cdn.pixabay.com/photo/2016/03/31/19/14/list-1294835_1280.png"></a>
+		<a href="/follow/request-view" id="followRequestBtn"><img class="m-4" width="40" height="40" src="https://cdn.pixabay.com/photo/2016/03/31/19/14/list-1294835_1280.png"></a>
 
 		<div th:if="${session.userId != null}" class="write-box border rounded m-3">
 			<input type="text" id="writeTextAreaSubject" placeholder="제목을 입력해주세요" class="w-100 border-0 form-control mb-2 bg-light">
