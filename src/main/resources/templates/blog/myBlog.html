@@ -54,21 +54,22 @@
 				<!-- 본문 이미지 -->
 				<div class="d-flex">
 					<div>
-						<div id="carouselExampleFade" class="carousel slide carousel-fade card-img w-100 col-10" data-ride="carousel">
+						<div th:id="|post${cardView.post.id}|" class="carousel slide card-img w-100" data-ride="carousel">
 							  <div class="carousel-inner">
-							    <div class="carousel-item active" th:each="postImageUrl, a : ${cardView.postImage}">
 								    <!-- 이미지 애니메이션 관련한 라이브러리 찾아보기(자바스크립트 -->
-								    <img id="img" th:src="${postImageUrl.imageUrl}" th:data-image-url="${postImageUrl.imageUrl}" alt="블로그 사진">
-								    <span th:text="${postImageUrl.imageUrl}"></span>
-							    </div>
+							    <th:block th:each="postImageUrl, a : ${cardView.postImage}">
+								    <div class="carousel-item" th:classAppend="${a.index == 0} ? 'active' : null">
+									    <img th:src="${postImageUrl.imageUrl}" class="d-block w-100" th:data-image-url="${postImageUrl.imageUrl}" width="400" alt="블로그 사진">
+								    </div>
+							    </th:block>
 							  </div>
-							  <button class="carousel-control-prev" type="button" data-target="#carouselExampleFade" data-slide="prev">
+							  <button class="carousel-control-prev" type="button" th:data-target="|#post${cardView.post.id}|" data-slide="prev">
 							    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-							    <span id="prev" class="sr-only">Previous</span>
+							    <span class="sr-only">Previous</span>
 							  </button>
-							  <button class="carousel-control-next" type="button" data-target="#carouselExampleFade" data-slide="next">
+							  <button class="carousel-control-next" type="button" th:data-target="|#post${cardView.post.id}|" data-slide="next">
 							    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-							    <span id="next" class="sr-only">Next</span>
+							    <span class="sr-only">Next</span>
 							  </button>
 						</div>
 					</div>
