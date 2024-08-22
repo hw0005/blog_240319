@@ -12,8 +12,8 @@
 				<img alt="검색" width="35" src="https://cdn.pixabay.com/photo/2022/03/06/06/39/search-7050945_960_720.png">
 				<!-- text -->
 				<div class="d-flex ml-4">
-					<input type="text" class="form-control col-12" placeholder="유저 검색">
-					<button id="searchBtn" class="form-control bg-warning col-3">검색</button>
+					<input id="searchUserTextByLoginId" type="text" class="form-control col-12" placeholder="유저 검색">
+					<button id="searchBtn" class="form-control bg-warning col-3" >검색</button>
 				</div>
 			</div>
 		</div>
@@ -24,9 +24,9 @@
 				<div>
 					<div class="d-flex justify-content-around" th:each="cardView : ${cardViewList}"> <!-- 여기서 반복문 돌리기 -->
 						<!-- 유저 이름 나오게 하기 -->
-						<span th:text=${cardView.user.name}>유저이름</span>
+						<span th:text="${cardView.searchUser.loginId}">유저이름</span>
 						<!-- 상태 표시 -->
-						<span class="bg-success">상태표시</span>
+						<span class="status bg-success">상태표시</span>
 					</div>
 				</div>
 			</div>
@@ -38,13 +38,44 @@
     <script>
 		$(document).ready(function() {
 			//alert("응");
-			$("#searchBtn").on('click', function() {
-				//alert("응");
-				
-				
-				
-			});
 			
-		});
+			// 검색버튼
+			$("#searchBtn").on('click', function() {
+				let loginId = $("#searchUserTextByLoginId").val().trim();
+				console.log(loginId);
+				if (!loginId) {
+					alert("찾을 유저를 입력하세요");
+					return;
+				}
+				
+				// 폼 태그를 스크립트에서 쓰기
+				let formData = new FormData();
+				formData.append("loginId", loginId);
+				
+				//AJAX 시작
+				$.ajax({
+					type:"POST"
+					, url:"/search/user"
+					, data: formData
+					, contentType: false
+					, processData: false
+					, success:function(data) {
+						if (data.code = 200) {
+							alert(data.result);
+							location.reload();
+						} else if (data.code == 500){ // 비로그인시 화면 이동
+							alert(data.error_message);
+							location.href="/user/sign-in-view";
+						} else if (data.code == 403) { // 유저 없을 때 메시지
+							alert(data.non_user);
+							location.reload();
+						}
+					}
+					, error:function(e) {
+						alert("유저를 검색하는데 실패했습니다.");
+					}
+				}); // AJAX 끝	
+			}); // 검색버튼 끝
+		}); // document 끝
     </script>
 </th:block>

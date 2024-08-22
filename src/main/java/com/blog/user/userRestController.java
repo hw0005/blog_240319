@@ -17,7 +17,7 @@ import jakarta.servlet.http.HttpSession;
 
 @RestController
 @RequestMapping("/user")
-public class userRestController {
+public class UserRestController {
 	
 	@Autowired
 	private UserBO userBO;

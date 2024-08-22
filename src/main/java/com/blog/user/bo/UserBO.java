@@ -26,6 +26,10 @@ public class UserBO {
 		return userRepository.findById(userId).orElse(null);
 	}
 	
+	public List<UserEntity> getUserEntityListByLoginId(String loginId) {
+		return userRepository.findByOrderByLoginIdDesc();
+	}
+	
 	
 	public UserEntity addUser(String loginId, String password, String name, String email) {
 		return userRepository.save(UserEntity.builder()

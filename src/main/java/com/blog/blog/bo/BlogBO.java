@@ -14,6 +14,7 @@ import com.blog.post.bo.PostBO;
 import com.blog.post.bo.PostImageBO;
 import com.blog.post.domain.PostImage;
 import com.blog.post.entity.PostEntity;
+import com.blog.search.bo.SearchBO;
 import com.blog.user.bo.UserBO;
 import com.blog.user.entity.UserEntity;
 
@@ -33,6 +34,9 @@ public class BlogBO {
 	
 	@Autowired
 	private LikeBO likeBO;
+	
+	@Autowired
+	private SearchBO searchBO;
 	
 	// input: userId, output: List<CardView>
 	public List<CardView> generateCardViewList(Integer userId) {
@@ -69,6 +73,11 @@ public class BlogBO {
 			
 			// 좋아요 채움여부
 			card.setFilledLike(likeBO.filledLikeByPostIdUserId(post.getId(), userId));
+			
+			// 유저 검색
+			UserEntity searchUser = searchBO.getUserEntityByLoginId(card.getUser().getLoginId());
+			card.setSearchUser(searchUser);
+			
 			
 			// 리스트에 넣기
 			cardViewList.add(card);

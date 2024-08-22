@@ -14,7 +14,7 @@ import jakarta.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/search")
-public class searchController {
+public class SearchController {
 	@Autowired
 	private BlogBO blogBO;
 	

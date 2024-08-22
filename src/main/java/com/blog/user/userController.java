@@ -8,7 +8,7 @@ import jakarta.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/user")
-public class userController {
+public class UserController {
 	
 	// 로그인 화면
 	@GetMapping("/sign-in-view")
