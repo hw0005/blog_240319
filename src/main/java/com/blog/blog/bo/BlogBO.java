@@ -63,6 +63,7 @@ public class BlogBO {
 			
 			// 댓글 갯수
 			
+			
 			// 댓글 나오기
 			List<CommentView> commetViewList = commentBO.generateCommentViewListByPostId(post.getId());
 			card.setCommentList(commetViewList);
@@ -73,11 +74,6 @@ public class BlogBO {
 			
 			// 좋아요 채움여부
 			card.setFilledLike(likeBO.filledLikeByPostIdUserId(post.getId(), userId));
-			
-			// 유저 검색
-			UserEntity searchUser = searchBO.getUserEntityByLoginId(card.getUser().getLoginId());
-			card.setSearchUser(searchUser);
-			
 			
 			// 리스트에 넣기
 			cardViewList.add(card);

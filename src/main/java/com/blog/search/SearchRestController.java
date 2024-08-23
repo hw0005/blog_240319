@@ -38,16 +38,15 @@ public class SearchRestController {
 		}
 		
 		// db (user)조회
-		UserEntity name = searchBO.getUserEntityByLoginId(loginId);
+		UserEntity name = searchBO.findByLoginIdStartingWith(loginId);
 		
 		//응답값: 유저 존재할 시  성공, 없을 시 없다고 할 것
-		if (name != null) {
+		if (name != null) { // 유저 있을 시 
 			result.put("code", 200);
-			result.put("result", "유저 존재");
-		}
-		if (name == null) {
+			result.put("result", "유저가 존재합니다.");
+		} else if (name == null) { // 유저 없을 시
 			result.put("code", 403);
-			result.put("non_user", "유저를 찾지 못했습니다.");
+			result.put("non_user", "유저가 존재하지 않습니다.");
 		}
 		
 		return result;

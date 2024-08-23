@@ -7,8 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.blog.blog.bo.BlogBO;
-import com.blog.blog.domain.CardView;
+import com.blog.search.bo.SearchBO;
+import com.blog.search.domain.SearchUserView;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -16,17 +16,17 @@ import jakarta.servlet.http.HttpSession;
 @RequestMapping("/search")
 public class SearchController {
 	@Autowired
-	private BlogBO blogBO;
+	private SearchBO searchBO;
+	
 	
 	@RequestMapping("/user-view")
 	public String searchUserView(Model model,
 			HttpSession session) {
 			//  로그인 여부 확인
-			Integer userId = (Integer)session.getAttribute("userId");
+			String userLoginId = (String)session.getAttribute("userLoginId");
 			
-			List<CardView> cardViewList = blogBO.generateCardViewList(userId);
-			model.addAttribute("cardViewList", cardViewList);
-			
+			List<SearchUserView> searchUserViewList = searchBO.generateSearchUserView(userLoginId);
+			model.addAttribute("searchUserViewList", searchUserViewList);
 		
 		return "search/searchUser";
 	}

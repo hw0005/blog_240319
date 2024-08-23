@@ -21,10 +21,10 @@
 		<!-- 유저 조회값 -->
 		<div class="search-result-box">
 			<div class="ml-3">
-				<div>
-					<div class="d-flex justify-content-around" th:each="cardView : ${cardViewList}"> <!-- 여기서 반복문 돌리기 -->
+				<div>	
+					<div class="d-flex justify-content-around" th:each="searchUser : ${searchUserViewList}"> <!-- 여기서 반복문 돌리기 -->
 						<!-- 유저 이름 나오게 하기 -->
-						<span th:text="${cardView.searchUser.loginId}">유저이름</span>
+						<span id="name" th:text="${searchUser.user.loginId}">유저이름</span>
 						<!-- 상태 표시 -->
 						<span class="status bg-success">상태표시</span>
 					</div>
@@ -41,6 +41,9 @@
 			
 			// 검색버튼
 			$("#searchBtn").on('click', function() {
+				// 이름, 상태 초기화
+				$("#name").addClass("d-none");
+				
 				let loginId = $("#searchUserTextByLoginId").val().trim();
 				console.log(loginId);
 				if (!loginId) {
@@ -60,9 +63,9 @@
 					, contentType: false
 					, processData: false
 					, success:function(data) {
-						if (data.code = 200) {
+						if (data.code == 200) {
 							alert(data.result);
-							location.reload();
+							$("#name").removeClass("d-none");
 						} else if (data.code == 500){ // 비로그인시 화면 이동
 							alert(data.error_message);
 							location.href="/user/sign-in-view";

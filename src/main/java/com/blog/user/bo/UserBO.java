@@ -8,15 +8,26 @@ import org.springframework.stereotype.Service;
 import com.blog.user.entity.UserEntity;
 import com.blog.user.repository.UserRepository;
 
+import jakarta.persistence.TypedQuery;
+
 @Service
 public class UserBO {
 	
 	@Autowired
 	private UserRepository userRepository;
 	
+	// 유저 조회
 	public UserEntity getUserEntityByLoginId(String loginId) {
 		return userRepository.findByLoginId(loginId);
 	}
+	
+	// 유저 검색 ~~로 시작
+//	public List<UserEntity> findByLoginIdStartingWith(String loginId) {
+//		return userRepository.findByLoginIdStartingWith(loginId);
+//	}
+	
+	// 유저 조회 끝
+	
 	
 	public UserEntity getUserEntityByLoginIdPassword(String loginId, String password) {
 		return userRepository.findByLoginIdAndPassword(loginId, password);
@@ -26,6 +37,7 @@ public class UserBO {
 		return userRepository.findById(userId).orElse(null);
 	}
 	
+	// 글 게시 및 유저 조회
 	public List<UserEntity> getUserEntityListByLoginId(String loginId) {
 		return userRepository.findByOrderByLoginIdDesc();
 	}
