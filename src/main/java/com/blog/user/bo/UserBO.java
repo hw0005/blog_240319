@@ -29,7 +29,7 @@ public class UserBO {
 	
 	// 글 게시 및 유저 검색조회
 	public List<UserEntity> getUserEntityListByLoginId(String loginId) {
-		return userRepository.findByLoginIdStartingWithOrderByLoginIdDesc(loginId);
+		return userRepository.findByLoginIdStartingWithOrderByIdDesc(loginId);
 	}
 	
 	

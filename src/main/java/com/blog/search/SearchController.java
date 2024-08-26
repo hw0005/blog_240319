@@ -5,7 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.ObjectUtils;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.blog.search.bo.SearchBO;
 import com.blog.search.domain.SearchUserView;
@@ -19,16 +22,18 @@ public class SearchController {
 	private SearchBO searchBO;
 	
 	
-	@RequestMapping("/user-view")
-	public String searchUserView(Model model,
-			HttpSession session) {
+	@GetMapping("/user-view")
+	public String searchUserView(@RequestParam(required = false) String keyword
+								, Model model) {
 			//  로그인 여부 확인
-			String userLoginId = (String)session.getAttribute("userLoginId");
 			
-			List<SearchUserView> searchUserViewList = searchBO.generateSearchUserView(userLoginId);
-			model.addAttribute("searchUserViewList", searchUserViewList);
+			if (ObjectUtils.isEmpty(keyword) == false) {
+				List<SearchUserView> searchUserViewList = searchBO.generateSearchUserView(keyword);
+				model.addAttribute("searchUserViewList", searchUserViewList);
+			}
 		
 		return "search/searchUser";
 	}
 	
+	//@PostMapping("/result-view")
 }

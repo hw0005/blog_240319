@@ -42,7 +42,7 @@
 			// 검색버튼
 			$("#searchBtn").on('click', function() {
 				// 이름, 상태 초기화
-				$("#name").addClass("d-none");
+				//$("#name").addClass("d-none");
 				
 				let loginId = $("#searchUserTextByLoginId").val().trim();
 				console.log(loginId);
@@ -51,20 +51,27 @@
 					return;
 				}
 				
+				location.href = "/search/user-view?keyword=" + loginId; 
+				
+				
+				/*
+				
 				// 폼 태그를 스크립트에서 쓰기
 				let formData = new FormData();
 				formData.append("loginId", loginId);
 				
 				//AJAX 시작
 				$.ajax({
-					type:"POST"
-					, url:"/search/user"
+					type:"Post"
+					, url:"/search/result-view"
 					, data: formData
 					, contentType: false
 					, processData: false
 					, success:function(data) {
 						if (data.code == 200) {
 							alert(data.result);
+							console.log(data.list);
+							
 						} else if (data.code == 500){ // 비로그인시 화면 이동
 							alert(data.error_message);
 							location.href="/user/sign-in-view";
@@ -76,7 +83,9 @@
 					, error:function(e) {
 						alert("유저를 검색하는데 실패했습니다.");
 					}
-				}); // AJAX 끝	
+				}); // AJAX 끝
+				*/
+				
 			}); // 검색버튼 끝
 		}); // document 끝
     </script>

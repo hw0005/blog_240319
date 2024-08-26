@@ -16,7 +16,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
 	public UserEntity findByLoginIdAndPassword(String loginId, String password);
 
 	// JPQL 유저 검색 조회
-	public List<UserEntity> findByLoginIdStartingWithOrderByLoginIdDesc(String loginId);
+	public List<UserEntity> findByLoginIdStartingWithOrderByIdDesc(String loginId);
 	
 
 	
