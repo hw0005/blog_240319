@@ -26,7 +26,7 @@ public class CardView {
 	private List<CommentView> commentList;
 	
 	// 댓글 갯수
-	
+	private int commentCount;
 	
 	// 좋아요 갯수
 	private int likeCount;

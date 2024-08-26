@@ -20,6 +20,11 @@ public class CommentBO {
 	@Autowired
 	private UserBO userBO;
 	
+	// 댓글 갯수
+	public int getCommentCountByPostId(int postId) {
+		return commentMapper.selectCommentCountByUserIdOrPostId(null, postId);
+	}
+	
 	// 댓글 추가
 	public void addComment(int userId, int postId, String content) {
 		commentMapper.insertComment(userId, postId, content);

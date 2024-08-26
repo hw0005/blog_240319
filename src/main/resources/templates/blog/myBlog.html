@@ -93,9 +93,9 @@
 						<img th:if="${cardView.filledLike == false}" src="https://www.iconninja.com/files/214/518/441/heart-icon.png" width="18" height="18" alt="empty heart">
 						<img th:unless="${cardView.filledLike == false}"src="https://cdn.pixabay.com/photo/2016/04/24/05/52/heart-1348868_1280.png" width="18" height="18" alt="filled heart">
 					</a>
-						<span th:text="|좋아요 ${cardView.likeCount}개|">좋아요 n개</span>
+						<span th:text="|좋아요 ${cardView.likeCount}개|"></span>
 					<!-- 댓글 -->
-					<img src="https://cdn.pixabay.com/photo/2016/02/02/05/53/button-1174805_960_720.png" width="18" height="18"><span>댓글 n개</span>
+					<img src="https://cdn.pixabay.com/photo/2016/02/02/05/53/button-1174805_960_720.png" width="18" height="18"><span th:text="|댓글 ${cardView.commentCount}개|"></span>
 				</div>
 			</div> <!-- 좋아요, 댓글 개수 카드 끝 -->
 			
@@ -365,6 +365,12 @@
 					}
 				}); // ajax끝
 			}); // 좋아요 끝
+			
+			
+			// 댓글 갯수
+			
+			
+			
 		}); // document 끝
     </script>
 </th:block>

@@ -15,22 +15,15 @@ public class SearchBO {
 	@Autowired
 	private UserBO userBO;
 	
-	// API에서 유저 조회 가져오는 거
-	public UserEntity findByLoginIdStartingWith(String loginId) {
-		return userBO.getUserEntityByLoginId(loginId);
-	}
-	
 	// HTML에 뿌리기 위해 SearchUserView에 저장 후 유저 조회 및 가져오는 거
 	public List<SearchUserView> generateSearchUserView (String loginId) {
 		
 		List<SearchUserView> searchUserList = new ArrayList<>();
 		
-		// 리스트로 유저 가져오기
-		List<UserEntity> userList = userBO.getUserEntityListByLoginId(loginId);
 		
 		// 검색한 유저 가져오기
 		// -> like 문법 string 시작하게 하는 걸로 aa면 aabb도 검색
-//		List<UserEntity> searchUsersList = userBO.findByLoginIdStartingWith(loginId);
+		List<UserEntity> userList = userBO.getUserEntityListByLoginId(loginId);
 		
 		// 반복문 돌리기
 		for (UserEntity user : userList) {
@@ -39,8 +32,6 @@ public class SearchBO {
 			
 			// 유저들 가져오기
 			search.setUser(user);
-						
-			
 
 			// 리스트에 넣기
 			searchUserList.add(search);

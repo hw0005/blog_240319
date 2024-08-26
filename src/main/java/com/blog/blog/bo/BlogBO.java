@@ -62,7 +62,8 @@ public class BlogBO {
 			card.setUser(user);
 			
 			// 댓글 갯수
-			
+			int commentCount = commentBO.getCommentCountByPostId(post.getId());
+			card.setCommentCount(commentCount);
 			
 			// 댓글 나오기
 			List<CommentView> commetViewList = commentBO.generateCommentViewListByPostId(post.getId());
