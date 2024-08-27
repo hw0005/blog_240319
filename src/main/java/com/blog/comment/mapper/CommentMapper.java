@@ -22,4 +22,9 @@ public interface CommentMapper {
 	public int selectCommentCountByUserIdOrPostId(
 			@Param("userId") Integer userId,
 			@Param("postId") int postId);
+	
+	
+	public void deleteCommentByPostIdAndUserId(
+			@Param("postId") int postId,
+			@Param("userId") int userId);
 }

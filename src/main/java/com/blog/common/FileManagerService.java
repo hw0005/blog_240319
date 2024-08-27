@@ -24,7 +24,7 @@ public class FileManagerService {
 	//내 노트북 이미지 저장 경로
 	public static final String FILE_UPLOAD_PATH ="D:\\윤현우\\7_PROJECT\\BLOG\\workspace\\image/";
 	
-	
+	// 글 업로드
 	public List<String> uploadFileList(List<MultipartFile> file, String userLoginId) {
 		// 폴더 생성(directory)
 		// 예: aaaa_24XXXX/XXX.jpg
@@ -41,7 +41,7 @@ public class FileManagerService {
 		}
 		
 		
-		// 파일업로드
+		// 이미지업로드
 		List<String> image = new ArrayList<>();
 		for (int i = 0; i < file.size(); i++) {
 			try {
@@ -58,5 +58,30 @@ public class FileManagerService {
 		return image;
 		
 	}
+	
+	// 글 삭제
+	public void deleteFile(String imageUrl) {
+		
+			Path path = Paths.get(FILE_UPLOAD_PATH + imageUrl.replace("/images/", ""));
+			
+			// 이미지 삭제
+			try {
+				Files.delete(path);
+			} catch (IOException e) {
+				log.info("[FileManagerService 파일삭제] 삭제실패. path:{}", path.toString());
+				return;
+			}
+			
+			// 폴더(디렉토리) 삭제
+			path = path.getParent();
+			if (Files.exists(path)) {
+				try {
+					Files.delete(path);
+				} catch (IOException e) {
+					log.info("[FileManagerService 파일삭제] 디렉토리 삭제 실패. path:{}", path.toString());
+				}
+			}
+			
+		}
 	
 }

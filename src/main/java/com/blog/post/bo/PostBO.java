@@ -1,15 +1,25 @@
 package com.blog.post.bo;
 
+import java.awt.Image;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.blog.comment.mapper.CommentMapper;
 import com.blog.common.FileManagerService;
+import com.blog.like.mapper.LikeMapper;
+import com.blog.post.domain.PostImage;
 import com.blog.post.entity.PostEntity;
+import com.blog.post.mapper.PostMapper;
 import com.blog.post.repository.PostRepository;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class PostBO {
 	@Autowired
@@ -21,9 +31,19 @@ public class PostBO {
 	@Autowired
 	private PostImageBO postImageBO;
 	
+	@Autowired
+	private PostMapper postMapper;
+	
+	@Autowired
+	private CommentMapper commentMapper;
+	
+	@Autowired
+	private LikeMapper likeMapper;
+	
 	public List<PostEntity> getPostEntityList() {
 		return postRepository.findByOrderByIdDesc();
 	}
+	
 	
 	public void addPost(int userId, String userLoginId, String subject, String content, List<MultipartFile> file) {
 		// postEntity에서 저장돼있는 그 글을 불러온다. 그 글에 있는 이미지를 저장함.
@@ -48,6 +68,28 @@ public class PostBO {
 		}
 	}
 	
-	
-	
+	@Transactional
+	public void deletePostByPostId(int postId, int userId) {
+		
+		// 기존 글 postId로 가져오기, 글 삭제
+		PostEntity post = postRepository.findById(postId).orElse(null);
+		
+		if (post == null) {
+			log.error("[글 삭제]: postId:{}, userId:{}", postId, userId);
+		}
+		postRepository.delete(post);
+		
+		// 기존 이미지 postId로 가져오기, 이미지들 삭제
+		List<PostImage> imageUrl = postImageBO.selectImageUrlListByPostId(postId);
+		for (int i = 0; i < imageUrl.size(); i++) {
+			filemanagerService.deleteFile(imageUrl.get(i).getImageUrl());
+		}
+		postImageBO.deleteImageUrlListByPostId(postId);
+		
+		// 댓글 삭제
+		commentMapper.deleteCommentByPostIdAndUserId(postId, userId);
+		
+		// 좋아요 삭제
+		likeMapper.deleteLikeByUserIdPostId(userId, postId);
+	}
 }

@@ -16,6 +16,21 @@
  		WHERE
  			`postId` = #{postId}
  	</select>
+ 	
+ 	<select id="selectImageUrlByPostId" parameterType="int" resultType="com.blog.post.domain.PostImage">
+ 		SELECT
+ 			`id`
+			, `userId`
+			, `postId`
+			, `imageUrl`
+			, `createdAt`
+			, `updatedAt`
+ 		FROM
+ 			`image`
+ 		WHERE
+ 			`postId` = #{postId}
+ 	</select>
+ 	
  
  
  	<insert id="insertImage" parameterType="map">
@@ -36,4 +51,14 @@
  			, NOW()
  		)
  	</insert>
+ 	
+ 	<delete id="deleteImageUrlListByPostId" parameterType="int">
+ 		DELETE
+ 		FROM
+ 			`image`
+ 		WHERE
+ 			`postId` = #{postId}
+ 	</delete>
+ 	
+ 	
  </mapper>

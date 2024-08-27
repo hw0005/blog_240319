@@ -12,12 +12,18 @@ import com.blog.post.domain.PostImage;
 public interface PostMapper {
 	public List<Map<String, Object>> selectPostListTest();
 	
+	// 이미지 추가
 	public void insertImage(
 			@Param("userId") int userId,
 			@Param("postId") int postId,
 			@Param("imageUrl") String imageUrl);
 	
+	// 이미지 선택
 	public List<PostImage> selectImageUrlListByPostId(int postId);
 	
+	public PostImage selectImageUrlByPostId(int postId);
+	
+	// 이미지 삭제
+	public void deleteImageUrlListByPostId(int postId);
 	
 }

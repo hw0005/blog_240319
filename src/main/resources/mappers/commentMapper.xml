@@ -57,4 +57,13 @@
  			`id` = #{id}
  	</delete>
  	
+ 	<delete id="deleteCommentByPostIdAndUserId" parameterType="map">
+ 		DELETE
+ 		FROM
+ 			`comment`
+ 		WHERE
+ 			`postId` = #{postId}
+ 			AND `userId` = #{userId}
+ 	</delete>
+ 	
  </mapper>

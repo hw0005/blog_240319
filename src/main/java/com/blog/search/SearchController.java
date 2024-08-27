@@ -26,7 +26,6 @@ public class SearchController {
 	public String searchUserView(@RequestParam(required = false) String keyword
 								, Model model) {
 			//  로그인 여부 확인
-			
 			if (ObjectUtils.isEmpty(keyword) == false) {
 				List<SearchUserView> searchUserViewList = searchBO.generateSearchUserView(keyword);
 				model.addAttribute("searchUserViewList", searchUserViewList);

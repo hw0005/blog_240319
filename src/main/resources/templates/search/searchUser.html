@@ -24,9 +24,14 @@
 				<div>	
 					<div class="d-flex justify-content-around" th:each="searchUser : ${searchUserViewList}"> <!-- 여기서 반복문 돌리기 -->
 						<!-- 유저 이름 나오게 하기 -->
-						<span id="name" th:text="${searchUser.user.loginId}">유저이름</span>
-						<!-- 상태 표시 -->
-						<span class="status bg-success">상태표시</span>
+						<span th:if="${searchUser.user.loginId == session.userLoginId}" th:text="${searchUser.user.loginId}" class="d-none">유저이름</span>
+						<span th:unless="${searchUser.user.loginId == session.userLoginId}" th:text="${searchUser.user.loginId}">유저이름</span>
+						
+						<!-- 상태 표시: 나는 숨겨 -->
+						<span th:if="${searchUser.user.loginId == session.userLoginId}" class="status bg-success d-none">나야</span>
+						
+						<!-- 상태표시 case문 해야 함 팔로우 버튼 누르면 팔로우 Controller로 넘어가게 설계 후 API 설계 -->
+						<a href="#"><span id="follow" th:unless="${searchUser.user.loginId == session.userLoginId}" class="status bg-primary">팔로우</span></a> 
 					</div>
 				</div>
 			</div>
@@ -42,7 +47,6 @@
 			// 검색버튼
 			$("#searchBtn").on('click', function() {
 				// 이름, 상태 초기화
-				//$("#name").addClass("d-none");
 				
 				let loginId = $("#searchUserTextByLoginId").val().trim();
 				console.log(loginId);

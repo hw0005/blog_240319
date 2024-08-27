@@ -34,8 +34,8 @@
 	</div>
 	
 	<!-- 글 -->
-	<div class="d-flex justify-content-center my-5">
-		<div class="my-blog-box" th:if="${session.userId == cardView.post.userId}" th:each="cardView : ${cardViewList}">
+	<div class="d-flex justify-content-center my-5" th:each="cardView : ${cardViewList}">
+		<div class="my-blog-box" th:if="${session.userId == cardView.post.userId}">
 			<!-- 글 카드 시작 -->
 			<div class="card border rounded mt-3">
 				<div class="p-2 d-flex">
@@ -46,7 +46,7 @@
 					<span class="font-weight-bold" th:text="${cardView.user.name}">글쓴이</span>
 					
 					<!-- 더보기 ... 로그인된 사람 글쓴이 정보 일치 -->
-					<a th:if="${session.userId == cardView.post.userId}" href="#" class="more-btn">
+					<a th:if="${session.userId == cardView.post.userId}" href="#" class="more-btn" th:data-post-id="${cardView.post.id}" data-toggle="modal" data-target="#modal">
 						<img src="https://www.iconninja.com/files/860/824/939/more-icon.png" width="30">
 					</a>
 				</div>
@@ -126,6 +126,22 @@
 					</div>
 				</div> <!-- 댓글 끝 -->
 			</div> <!-- 댓글 카드 끝 -->
+			
+			<!-- Button trigger modal -->
+		<!-- Modal:타임리프 레이아웃 때문에 section 태그 안쪽에 위치 -->
+		<div class="modal fade" id="modal">
+			<!-- modal-sm:작은 모달창, modal-dialog-centered: 수직 가운데 정렬 -->
+		 	<div class="modal-dialog modal-sm modal-dialog-centered">
+		    	<div class="modal-content text-center">
+		      		<div class="py-3">
+		      			<a href="#" id="postDeleteBtn">삭제하기</a>
+		      		</div>
+		      		<div class="py-3 border-top">
+		      			<a href="#" data-dismiss="modal">취소</a>
+		      		</div>
+		    	</div>
+		  </div>
+		</div> <!-- 모달 끝 -->
 		</div> <!-- my-blog-box 끝 -->
 	</div>
 	
@@ -136,11 +152,8 @@
     
     	//let a = /*[[${cardViewList}]]*/c;
     	//console.log(a);
-    	console.log(/*[[${cardViewList}]]*/"a");
+    	//console.log(/*[[${cardViewList}]]*/"a");
     	//postImageUrl, a : ${cardView.postImage}
-    	
-    	
-    	
 		$(document).ready(function() {
 			//alert("응");
 			// 이미지 파일을 담아놓을 배열
@@ -367,10 +380,39 @@
 			}); // 좋아요 끝
 			
 			
-			// 댓글 갯수
-			
-			
-			
+			// 더보기 버튼 모달 => 삭제 or 취소
+			$(".more-btn").on('click', function(e) {
+				//alert("응");
+				e.preventDefault();
+				
+				
+				let postId = $(this).data("post-id"); // getting
+				//alert(postId);
+				
+				$("#modal").data('post-id', postId); //setting
+				//alert($("#modal").data('post-id'));
+				
+				//삭제하기
+				$("#postDeleteBtn").on('click', function(e) {
+					e.preventDefault();
+					let postId = $("#modal").data("post-id");
+					//alert(postId);
+					$.ajax({
+						type:"delete"
+						, url:"/post/delete"
+						, data:{"postId" : postId}
+						, success:function(data) {
+							if (data.code == 200) {
+								alert("삭제 성공");
+								location.reload();
+							}
+						}
+						, error:function(e) {
+							alert("글을 삭제하는데 실패했습니다.")
+						}
+					}); //ajax끝
+				}); // 삭제하기 버튼 끝
+			}); // 모달 버튼 끝
 		}); // document 끝
     </script>
 </th:block>
