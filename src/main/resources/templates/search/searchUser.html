@@ -31,7 +31,7 @@
 						<span th:if="${searchUser.user.loginId == session.userLoginId}" class="status bg-success d-none">나야</span>
 						
 						<!-- 상태표시 case문 해야 함 팔로우 버튼 누르면 팔로우 Controller로 넘어가게 설계 후 API 설계 -->
-						<a href="#"><span id="follow" th:unless="${searchUser.user.loginId == session.userLoginId}" class="status bg-primary">팔로우</span></a> 
+						<a id="followBtn" th:data-login-id="${searchUser.user.loginId}" href="#"><span id="follow" th:unless="${searchUser.user.loginId == session.userLoginId}" class="status bg-primary">팔로우</span></a> 
 					</div>
 				</div>
 			</div>
@@ -54,12 +54,8 @@
 					alert("찾을 유저를 입력하세요");
 					return;
 				}
-				
 				location.href = "/search/user-view?keyword=" + loginId; 
-				
-				
 				/*
-				
 				// 폼 태그를 스크립트에서 쓰기
 				let formData = new FormData();
 				formData.append("loginId", loginId);
@@ -89,8 +85,33 @@
 					}
 				}); // AJAX 끝
 				*/
-				
 			}); // 검색버튼 끝
+			
+			//팔로우 요청 버튼 누를 시
+			$("#followBtn").on('click', function(e) {
+				//alert("응");
+				let loginId = $(this).data("login-id");
+				//console.log(loginId);
+				
+				// ajax시작
+				$.ajax({
+					type:"post"
+					, url:"/follow/request"
+					, data:{loginId:"loginId"}
+					, success:function(data) {
+						if (data.code == 200) {
+							alert(data.result);
+							location.reload()
+							// 상태 표시 바꿔야 함.
+						} else if (data.code ==500){
+							alert(data.error_message);
+						}
+					}
+					, error:function(e) {
+						alert("팔로우 하는데 실패했습니다");
+					}
+				}); //ajax끝
+			}); //팔로우 버튼끝
 		}); // document 끝
     </script>
 </th:block>

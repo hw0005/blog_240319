@@ -14,7 +14,7 @@ import jakarta.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/follow")
-public class followController {
+public class FollowController {
 	@Autowired
 	private BlogBO blogBO;
 	
@@ -22,13 +22,6 @@ public class followController {
 	@RequestMapping("/request-view")
 	public String followRequestView(Model model,
 			HttpSession session) {
-		
-		//  로그인 여부 확인
-		Integer userId = (Integer)session.getAttribute("userId");
-		
-		List<CardView> cardViewList = blogBO.generateCardViewList(userId);
-		model.addAttribute("cardViewList", cardViewList);
-		
 		
 		return "follow/request";
 	}
