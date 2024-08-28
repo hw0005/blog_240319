@@ -13,7 +13,7 @@
 				<!-- text -->
 				<div class="d-flex ml-4">
 					<input id="searchUserTextByLoginId" type="text" class="form-control col-12" placeholder="유저 검색">
-					<button id="searchBtn" class="form-control bg-warning col-3" >검색</button>
+					<button id="searchBtn" class="form-control bg-warning col-3">검색</button>
 				</div>
 			</div>
 		</div>
@@ -27,11 +27,20 @@
 						<span th:if="${searchUser.user.loginId == session.userLoginId}" th:text="${searchUser.user.loginId}" class="d-none">유저이름</span>
 						<span th:unless="${searchUser.user.loginId == session.userLoginId}" th:text="${searchUser.user.loginId}">유저이름</span>
 						
-						<!-- 상태 표시: 나는 숨겨 -->
-						<span th:if="${searchUser.user.loginId == session.userLoginId}" class="status bg-success d-none">나야</span>
 						
+						
+						<!-- 상태 표시: 나는 숨겨 -->
+						<span id="followerId" th:if="${searchUser.user.loginId == session.userLoginId}" th:data-follower-id class="status bg-success d-none">나야</span>
 						<!-- 상태표시 case문 해야 함 팔로우 버튼 누르면 팔로우 Controller로 넘어가게 설계 후 API 설계 -->
-						<a id="followBtn" th:data-login-id="${searchUser.user.loginId}" href="#"><span id="follow" th:unless="${searchUser.user.loginId == session.userLoginId}" class="status bg-primary">팔로우</span></a> 
+						<form id="followForm" method="post" action="/follow/request">
+							<!--팔로우할 로그인아이디  -->
+							<input type="hidden" id="followingUserLoginId" name="followingUserLoginId" th:unless="${searchUser.user.loginId == session.userLoginId}" th:value="${searchUser.user.loginId}">
+							<!-- 내 로그인아이디(현재 로그인해서 누른 사람) -->
+							<input type="hidden" id="follwerUserLoginId" name="follwerUserLoginId" th:value="${session.userLoginId}">
+							
+							<button type="button" id="followStandByBtn" class="form-control status d-none bg-danger">팔로우 대기</button>
+							<button type="submit" id="followBtn" th:unless="${searchUser.user.loginId == session.userLoginId}" class="form-control status bg-primary">팔로우</button>
+						</form>
 					</div>
 				</div>
 			</div>
@@ -43,6 +52,9 @@
     <script>
 		$(document).ready(function() {
 			//alert("응");
+			
+			
+			
 			
 			// 검색버튼
 			$("#searchBtn").on('click', function() {
@@ -88,29 +100,42 @@
 			}); // 검색버튼 끝
 			
 			//팔로우 요청 버튼 누를 시
-			$("#followBtn").on('click', function(e) {
+			$("form").on('submit', function(e) {
 				//alert("응");
-				let loginId = $(this).data("login-id");
-				//console.log(loginId);
+				e.preventDefault();
 				
+				// 초기화
+				$("#followStandByBtn").addClass("d-none");
+				$("#followBtn").removeClass("d-none");
+				
+				let followingUserLoginId = $("#followingUserLoginId").val(); // 팔로우 할 아이디
+				console.log(followingUserLoginId);
+				
+				
+				//AJAX request 세팅
+				let url = $(this).attr('action');
+				console.log(url);
+				let params = $(this).serialize();
+				console.log(params);
 				// ajax시작
-				$.ajax({
-					type:"post"
-					, url:"/follow/request"
-					, data:{loginId:"loginId"}
-					, success:function(data) {
-						if (data.code == 200) {
-							alert(data.result);
-							location.reload()
-							// 상태 표시 바꿔야 함.
-						} else if (data.code ==500){
-							alert(data.error_message);
-						}
+				$.post(url, params)
+				.done(function(data) { //AJAX request
+					//AJAX response
+					if(data.code == 200) {
+						alert(data.result);
+						// 팔로우 요청 상태 표시 나타나게 해야 함
+						$("#followBtn").addClass("d-none");
+						$("#followStandByBtn").removeClass("d-none");
+					} else if(data.code = 500) {
+						alert(data.error_message);
 					}
-					, error:function(e) {
-						alert("팔로우 하는데 실패했습니다");
-					}
-				}); //ajax끝
+				});//ajax끝 
+				
+				// 대기 버튼 끝
+				$("#followStandByBtn").on('click', function(e) {
+					alert("팔로우 요청 중입니다. 팔로잉 상대가 요청 응답까지 기다려주세요");
+				}); // 대기 버튼 끝
+				
 			}); //팔로우 버튼끝
 		}); // document 끝
     </script>
