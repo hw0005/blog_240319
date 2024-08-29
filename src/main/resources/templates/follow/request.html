@@ -12,16 +12,16 @@
 		
 		<!-- 그 요청한 유저들 나오게 하는 태그 예/아니오-->
 		<div class="follow-request-box">
-			<div class="d-flex justify-content-between">
+			<div class="d-flex justify-content-between" th:each="followView : ${followViewList}">
 				<!--  유저 이름 나오게 하기 -->
 				<div class="ml-2">
-					<span><h1>hyunwoo</h1></span>
+					<h1 th:if="${followView.follow.followerUserLoginId != session.userLoginId && followView.follow.followStatus == '팔로우 요청 대기'}" th:text="${followView.follow.followerUserLoginId}">hyunwoo</h1>
 				</div>
 				
 				<!-- 예, 아니오 -->
 				<div class="d-flex justify-content-between align-items-center w-50">
-					<button id="requestPermit" class="form-control bg-success">승인</button>
-					<button id="requestDecline" class="form-control bg-danger">거절</button>
+					<button class="requestPermit form-control bg-success" th:if="${followView.follow.followerUserLoginId != session.userLoginId && followView.follow.followStatus == '팔로우 요청 대기'}" th:data-follower-id="${followView.follow.followerUserLoginId}" th:value="'팔로우 승인'">승인</button>
+					<button class="requestDecline form-control bg-danger" th:if="${followView.follow.followerUserLoginId != session.userLoginId && followView.follow.followStatus == '팔로우 요청 대기'}" th:data-follower-id="${followView.follow.followerUserLoginId}">거절</button>
 				</div>
 			</div>
 		</div>
@@ -35,8 +35,74 @@
 		$(document).ready(function() {
 			//alert("응");
 			
+			// 승인 버튼 시작
+			$(".requestPermit").on('click', function(e) {
+				//alert("응");
+				let followStatus = $(this).val();
+				console.log(followStatus);
+				
+				let followerUserLoginId = $(this).data("follower-id");
+				console.log(followerUserLoginId);
+				
+				let formData = new FormData();
+				formData.append("followStatus", followStatus);
+				formData.append("followerUserLoginId", followerUserLoginId);
+				
+				$.ajax({
+					type:"post"
+					, url:"/follow/permit"
+					, data:formData
+					, enctype: "multipart/form-data"
+					, processData: false
+					, contentType: false
+					, success:function(data) {
+						if (data.code == 200) {
+							alert(data.result);
+							location.reload();
+						} else if (data.code == 500) {
+							alert(data.error_message);
+							location.href="/user/sign-in-view";
+						}
+					}
+					, error:function(e) {
+						alert("팔로우 승인하는데 실패했습니다");
+					}
+				});// ajax끝 
+				
+			}); // 승인 버튼 끝
 			
+			// 거절 버튼 시작
+			$(".requestDecline").on('click', function(e) {
+				let followerUserLoginId = $(this).data("follower-id");
+				console.log(followerUserLoginId);
+				
+				$.ajax({
+					type:"post"
+					, url:"/follow/decline"
+					, data:{"followerUserLoginId":followerUserLoginId}
+					, success:function(data) {
+						if (data.code == 200){
+							alert(data.result);
+							location.reload();
+						} else if (data.code == 500) {
+							alert(data.error_message);
+							location.href="/user/sign-in-view";
+						}
+					}
+					, error:function(e) {
+						alert("거절하는데 실패했습니다.");
+					}
+				
+				});
+				
+				
+			}); // 거절 버튼 끝
 			
 		}); // document 끝
     </script>
 </th:block>
+
+
+
+
+

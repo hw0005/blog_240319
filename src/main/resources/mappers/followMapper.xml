@@ -3,18 +3,56 @@
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
  
  <mapper namespace="com.blog.follow.mapper.FollowMapper">
+ 	<select id="selectFollowListByLoginId" parameterType="String" resultType="com.blog.follow.domain.Follow">
+ 		SELECT
+ 			`id`
+			, `followerUserLoginId`
+			, `followingUserLoginId`
+			, `followStatus`
+			, `createdAt`
+		FROM
+			`follow`
+		WHERE
+			`followingUserLoginId` = #{followingUserLoginId}
+ 	</select>
+ 	
+ 	<!-- 팔로우 요청 -->
  	<insert id="insertFollower" parameterType="map">
  		INSERT INTO `follow`
  		(
  			`followerUserLoginId`
 			, `followingUserLoginId`
+			, `followStatus`
 			, `createdAt`
  		)
 		VALUES
 		(
 			#{followerUserLoginId}
 			, #{followingUserLoginId}
+			, #{followStatus}
 			, NOW()
 		)
  	</insert>
+ 	
+ 	<!-- 팔로우 승인 -->
+ 	<update id="updateFollower" parameterType="map">
+ 		UPDATE
+ 			`follow`
+ 		SET
+ 			`followerUserLoginId` = #{followerUserLoginId}
+ 			, `followingUserLoginId` = #{followingUserLoginId}
+ 			, `followStatus` = #{followStatus}
+ 	</update>
+ 	
+ 	
+ 	<!-- 팔로우 거절 -->
+ 	<delete id="deleteFollower" parameterType="map">
+ 		DELETE
+ 		FROM
+ 			`follow`
+ 		WHERE
+ 			`followerUserLoginId` = #{followerUserLoginId}
+			AND `followingUserLoginId` = #{followingUserLoginId}
+ 	</delete>
+ 	
  </mapper>

@@ -25,7 +25,7 @@
 					<div class="d-flex justify-content-around" th:each="searchUser : ${searchUserViewList}"> <!-- 여기서 반복문 돌리기 -->
 						<!-- 유저 이름 나오게 하기 -->
 						<span th:if="${searchUser.user.loginId == session.userLoginId}" th:text="${searchUser.user.loginId}" class="d-none">유저이름</span>
-						<span th:unless="${searchUser.user.loginId == session.userLoginId}" th:text="${searchUser.user.loginId}">유저이름</span>
+						<span id="userLoginId" th:unless="${searchUser.user.loginId == session.userLoginId}" th:text="${searchUser.user.loginId}">유저이름</span>
 						
 						
 						
@@ -37,9 +37,18 @@
 							<input type="hidden" id="followingUserLoginId" name="followingUserLoginId" th:unless="${searchUser.user.loginId == session.userLoginId}" th:value="${searchUser.user.loginId}">
 							<!-- 내 로그인아이디(현재 로그인해서 누른 사람) -->
 							<input type="hidden" id="follwerUserLoginId" name="follwerUserLoginId" th:value="${session.userLoginId}">
+							<!-- 팔로우 대기 -->
+							<input type="hidden" id="followStatus" name="followStatus" th:value="'팔로우 요청 대기'">
 							
-							<button type="button" id="followStandByBtn" class="form-control status d-none bg-danger">팔로우 대기</button>
-							<button type="submit" id="followBtn" th:unless="${searchUser.user.loginId == session.userLoginId}" class="form-control status bg-primary">팔로우</button>
+							<!-- <div>
+								[[${searchUser}]]
+							</div> -->
+							
+							<button type="submit" id="followBtn" th:if="${#arrays.isEmpty(searchUser.followList)}" class="form-control status bg-primary">팔로우</button>
+							<th:block th:if="${searchUser.followList}" th:each="followView : ${searchUser.followList}">
+								<button type="button" id="showPostBtn" th:if="${followView.followStatus == '팔로우 승인'}" class="form-control status bg-success">글보기</button>
+								<button type="button" th:if="${followView.followStatus == '팔로우 요청 대기'}" class="followStandByBtn form-control status bg-danger">팔로우 요청</button>
+							</th:block>
 						</form>
 					</div>
 				</div>
@@ -52,10 +61,6 @@
     <script>
 		$(document).ready(function() {
 			//alert("응");
-			
-			
-			
-			
 			// 검색버튼
 			$("#searchBtn").on('click', function() {
 				// 이름, 상태 초기화
@@ -66,7 +71,10 @@
 					alert("찾을 유저를 입력하세요");
 					return;
 				}
-				location.href = "/search/user-view?keyword=" + loginId; 
+				
+				location.href = "/search/user-view?keyword=" + loginId;
+				
+				
 				/*
 				// 폼 태그를 스크립트에서 쓰기
 				let formData = new FormData();
@@ -104,10 +112,7 @@
 				//alert("응");
 				e.preventDefault();
 				
-				// 초기화
-				$("#followStandByBtn").addClass("d-none");
-				$("#followBtn").removeClass("d-none");
-				
+
 				let followingUserLoginId = $("#followingUserLoginId").val(); // 팔로우 할 아이디
 				console.log(followingUserLoginId);
 				
@@ -124,15 +129,14 @@
 					if(data.code == 200) {
 						alert(data.result);
 						// 팔로우 요청 상태 표시 나타나게 해야 함
-						$("#followBtn").addClass("d-none");
-						$("#followStandByBtn").removeClass("d-none");
+						location.reload();
 					} else if(data.code = 500) {
 						alert(data.error_message);
 					}
 				});//ajax끝 
 				
 				// 대기 버튼 끝
-				$("#followStandByBtn").on('click', function(e) {
+				$(".followStandByBtn").on('click', function(e) {
 					alert("팔로우 요청 중입니다. 팔로잉 상대가 요청 응답까지 기다려주세요");
 				}); // 대기 버튼 끝
 				

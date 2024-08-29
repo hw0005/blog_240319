@@ -11,5 +11,6 @@ public class Follow {
 	private int id;
 	private String followerUserLoginId;
 	private String followingUserLoginId;
+	private String followStatus;
 	private LocalDateTime createdAt;
 }
