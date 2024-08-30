@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.blog.follow.bo.FollowBO;
-import com.blog.follow.domain.FollowView;
 import com.blog.search.bo.SearchBO;
 import com.blog.search.domain.SearchUserView;
 
@@ -36,7 +35,7 @@ public class SearchController {
 			
 			if (ObjectUtils.isEmpty(keyword) == false) {
 				
-				List<SearchUserView> searchUserViewList = searchBO.generateSearchUserView(keyword);
+				List<SearchUserView> searchUserViewList = searchBO.generateSearchUserView(keyword, userLoginId);
 				model.addAttribute("searchUserViewList", searchUserViewList);
 				
 //				List<FollowView> followViewList = followBO.generateFollowViewListByLoginId(userLoginId);

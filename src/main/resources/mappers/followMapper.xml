@@ -16,6 +16,22 @@
 			`followingUserLoginId` = #{followingUserLoginId}
  	</select>
  	
+ 	<select id="selectFollower" parameterType="map" resultType="com.blog.follow.domain.Follow">
+ 		SELECT
+ 			`id`
+			, `followerUserLoginId`
+			, `followingUserLoginId`
+			, `followStatus`
+			, `createdAt`
+		FROM
+			`follow`
+		WHERE
+			`followerUserLoginId` = #{follower}
+		AND
+			`followingUserLoginId` = #{following}
+ 	</select>
+ 	
+ 	
  	<!-- 팔로우 요청 -->
  	<insert id="insertFollower" parameterType="map">
  		INSERT INTO `follow`
@@ -42,6 +58,10 @@
  			`followerUserLoginId` = #{followerUserLoginId}
  			, `followingUserLoginId` = #{followingUserLoginId}
  			, `followStatus` = #{followStatus}
+ 		WHERE
+ 			`followingUserLoginId` = #{followingUserLoginId}
+ 	<!-- 	AND
+ 			`followerUserLoginId` = #{followerUserLoginId} -->
  	</update>
  	
  	

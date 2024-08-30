@@ -31,4 +31,8 @@ public interface FollowMapper {
 //	public int selectFollowCountByLoginId(String followerUserLoginId);
 	
 	public List<Follow> selectFollowListByLoginId(String followingUserLoginId);
+
+	public Follow selectFollower(@Param("follower") String follower
+								, @Param("following") String following);
+	
 }

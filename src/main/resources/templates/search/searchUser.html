@@ -31,7 +31,7 @@
 						
 						<!-- 상태 표시: 나는 숨겨 -->
 						<span id="followerId" th:if="${searchUser.user.loginId == session.userLoginId}" th:data-follower-id class="status bg-success d-none">나야</span>
-						<!-- 상태표시 case문 해야 함 팔로우 버튼 누르면 팔로우 Controller로 넘어가게 설계 후 API 설계 -->
+						<!-- 팔로우 버튼 누르면 팔로우 Controller로 넘어가게 설계 후 API 설계 -->
 						<form id="followForm" method="post" action="/follow/request">
 							<!--팔로우할 로그인아이디  -->
 							<input type="hidden" id="followingUserLoginId" name="followingUserLoginId" th:unless="${searchUser.user.loginId == session.userLoginId}" th:value="${searchUser.user.loginId}">
@@ -40,15 +40,14 @@
 							<!-- 팔로우 대기 -->
 							<input type="hidden" id="followStatus" name="followStatus" th:value="'팔로우 요청 대기'">
 							
-							<!-- <div>
-								[[${searchUser}]]
-							</div> -->
 							
-							<button type="submit" id="followBtn" th:if="${#arrays.isEmpty(searchUser.followList)}" class="form-control status bg-primary">팔로우</button>
-							<th:block th:if="${searchUser.followList}" th:each="followView : ${searchUser.followList}">
-								<button type="button" id="showPostBtn" th:if="${followView.followStatus == '팔로우 승인'}" class="form-control status bg-success">글보기</button>
-								<button type="button" th:if="${followView.followStatus == '팔로우 요청 대기'}" class="followStandByBtn form-control status bg-danger">팔로우 요청</button>
-							</th:block>
+							[[${searchUser}]]
+							
+							
+							<button type="submit" id="followBtn"  class="form-control status bg-primary">팔로우</button>
+							<button type="button" id="showPostBtn" class="form-control status bg-success">글보기</button>
+							<button type="button"  class="followStandByBtn form-control status bg-danger">팔로우 요청 대기</button>
+							
 						</form>
 					</div>
 				</div>
@@ -136,9 +135,10 @@
 				});//ajax끝 
 				
 				// 대기 버튼 끝
-				$(".followStandByBtn").on('click', function(e) {
+/* 				$(".followStandByBtn").on('click', function(e) {
+					alert("응");
 					alert("팔로우 요청 중입니다. 팔로잉 상대가 요청 응답까지 기다려주세요");
-				}); // 대기 버튼 끝
+				}); // 대기 버튼 끝 */
 				
 			}); //팔로우 버튼끝
 		}); // document 끝

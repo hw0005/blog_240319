@@ -44,7 +44,6 @@ public class FollowBO {
 		return followMapper.selectFollowListByLoginId(followingUserLoginId);
 	}	
 	
-	
 	// follow generate
 	public List<FollowView> generateFollowViewListByLoginId(String followingUserLoginId) { // 팔로우 요청한 사람으로 가져오기
 		List<FollowView> followViewList = new ArrayList<>(); 
@@ -72,5 +71,9 @@ public class FollowBO {
 			followViewList.add(followView);
 		}
 		return followViewList;
+	}
+
+	public Follow getFollower(String follower, String following) {
+		return followMapper.selectFollower(follower, following);
 	}
 }
