@@ -41,12 +41,16 @@
 							<input type="hidden" id="followStatus" name="followStatus" th:value="'팔로우 요청 대기'">
 							
 							
-							[[${searchUser}]]
+							<!-- [[${searchUser}]] -->
 							
-							
-							<button type="submit" id="followBtn"  class="form-control status bg-primary">팔로우</button>
-							<button type="button" id="showPostBtn" class="form-control status bg-success">글보기</button>
-							<button type="button"  class="followStandByBtn form-control status bg-danger">팔로우 요청 대기</button>
+							<!-- 
+							// null -> 아예 상대방 팔로우 자체도 안 했을 때 -> 팔로우 버튼 뜨게 하기
+							// following true, followingApproved false-> 팔로우 요청대기 버튼, 몇 명 팔로우 요청이 들어왔는지
+							// following true, followingApproved true -> 글 보기 버튼 
+							-->
+							<button type="submit" th:if="${searchUser.user.loginId != session.userLoginId && searchUser.followingApproved == null}" class="followBtn form-control status bg-primary">팔로우</button>
+							<button type="button" th:if="${searchUser.user.loginId != session.userLoginId && searchUser.following == true && searchUser.followingApproved == true}" class="showPostBtn form-control status bg-success">글보기</button>
+							<button type="button" th:if="${searchUser.user.loginId != session.userLoginId && searchUser.following == true && searchUser.followingApproved == false}" class="followStandByBtn form-control status bg-danger">팔로우 요청 대기</button>
 							
 						</form>
 					</div>
@@ -133,14 +137,20 @@
 						alert(data.error_message);
 					}
 				});//ajax끝 
-				
-				// 대기 버튼 끝
-/* 				$(".followStandByBtn").on('click', function(e) {
-					alert("응");
-					alert("팔로우 요청 중입니다. 팔로잉 상대가 요청 응답까지 기다려주세요");
-				}); // 대기 버튼 끝 */
-				
 			}); //팔로우 버튼끝
+			
+			// 대기 버튼 끝
+			$(".followStandByBtn").on('click', function(e) {
+				alert("팔로우 요청 대기 중입니다. 팔로잉 상대가 응답까지 기다리세요.");
+			}); // 팔로우요청 대기 버튼 끝
+			
+			// 글보기
+			$(".showPostBtn").on('click', function(e) {
+				alert("팔로잉의 글로 이동합니다.");
+				location.href="/blog/following-blog-view";
+			}); // 글보기 버튼 끝
+			
+			
 		}); // document 끝
     </script>
 </th:block>

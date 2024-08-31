@@ -31,6 +31,22 @@
 			`followingUserLoginId` = #{following}
  	</select>
  	
+ <!-- 	<!-- 팔로워 요청 명수 -->
+ 	<select id="selectFollowerListCountById" parameterType="map" resultType="com.blog.follow.domain.Follow">
+	 	SELECT
+	 		`id`
+			, `followerUserLoginId`
+			, `followingUserLoginId`
+			, `followStatus`
+			, `createdAt`
+		FROM
+			`follow`
+		WHERE
+			`id` = #{id}
+		AND
+			`followStatus` = '팔로우 요청 대기'
+ 	</select> -->
+ 	
  	
  	<!-- 팔로우 요청 -->
  	<insert id="insertFollower" parameterType="map">
@@ -60,8 +76,8 @@
  			, `followStatus` = #{followStatus}
  		WHERE
  			`followingUserLoginId` = #{followingUserLoginId}
- 	<!-- 	AND
- 			`followerUserLoginId` = #{followerUserLoginId} -->
+ 	 	AND
+ 			`followerUserLoginId` = #{followerUserLoginId}
  	</update>
  	
  	
