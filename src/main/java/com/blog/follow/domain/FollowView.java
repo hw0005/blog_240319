@@ -11,4 +11,6 @@ public class FollowView {
 	private Follow follow;
 	
 	private UserEntity user;
+	
+	private int followCount;
 }

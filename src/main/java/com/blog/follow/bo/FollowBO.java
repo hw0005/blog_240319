@@ -63,9 +63,14 @@ public class FollowBO {
 			followView.setUser(user);
 			
 			//follow요청 개수
-//			int followCount = followMapper.selectFollowCountByLoginId(follow.getFollowerUserLoginId());
-//			followView.setFollow(followCount);
-			
+		
+//			List<Follow> followCountList = followMapper.selectFollowerListCountById(follow.getId(), follow.getFollowStatus()); // 팔로우 요청한 사람들의 로그인 아이디
+//			for (int i = 0; i < followCountList.size(); i++) {
+//				int followCount = followCountList.get(i).getFollowStatus();
+//			}
+//			
+//			followView.setFollowCount(followCount);
+//			
 			
 			
 			followViewList.add(followView);
