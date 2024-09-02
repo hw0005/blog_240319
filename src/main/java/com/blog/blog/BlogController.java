@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.blog.blog.bo.BlogBO;
 import com.blog.blog.domain.CardView;
+import com.blog.follow.bo.FollowBO;
+import com.blog.follow.domain.FollowView;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -20,9 +22,23 @@ public class BlogController {
 	@Autowired
 	private BlogBO blogBO;
 	
+	@Autowired
+	private FollowBO followBO;
 	
 	@RequestMapping("/main-blog-view")
-	public String mainBlogView() {
+	public String mainBlogView(Model model,
+			HttpSession session) {
+			//  로그인 여부 확인
+			Integer userId = (Integer)session.getAttribute("userId");
+			String userLoginId = (String)session.getAttribute("userLoginId");
+			
+			List<CardView> cardViewList = blogBO.generateCardViewList(userId);
+			model.addAttribute("cardViewList", cardViewList);
+			
+			List<FollowView> followViewList = followBO.generateFollowViewListByLoginId(userLoginId);
+			model.addAttribute("followViewList" , followViewList);
+		
+		
 		return "blog/mainBlog";
 	}
 	
@@ -42,6 +58,8 @@ public class BlogController {
 	
 	@GetMapping("/following-blog-view")
 	public String followingBlogView() {
+		
+		
 		return "blog/followingBlog";
 	}
 }

@@ -44,6 +44,9 @@ public class PostBO {
 		return postRepository.findByOrderByIdDesc();
 	}
 	
+	public List<PostEntity> getPostEntityListByUserId(int id) {
+		return postRepository.findByOrderByUserIdDesc();
+	}
 	
 	public void addPost(int userId, String userLoginId, String subject, String content, List<MultipartFile> file) {
 		// postEntity에서 저장돼있는 그 글을 불러온다. 그 글에 있는 이미지를 저장함.

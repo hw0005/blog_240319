@@ -34,7 +34,8 @@
 	</div>
 	
 	<!-- 글 -->
-	<div class="d-flex justify-content-center my-5" th:each="cardView : ${cardViewList}">
+	<div class="my-5">
+		<div class="d-flex justify-content-center" th:each="cardView : ${cardViewList}">
 		<div class="my-blog-box" th:if="${session.userId == cardView.post.userId}">
 			<!-- 글 카드 시작 -->
 			<div class="card border rounded mt-3">
@@ -143,6 +144,7 @@
 		  </div>
 		</div> <!-- 모달 끝 -->
 		</div> <!-- my-blog-box 끝 -->
+		</div>
 	</div>
 	
 </section>

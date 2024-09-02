@@ -9,6 +9,10 @@ import org.springframework.stereotype.Service;
 import com.blog.follow.domain.Follow;
 import com.blog.follow.domain.FollowView;
 import com.blog.follow.mapper.FollowMapper;
+import com.blog.post.bo.PostBO;
+import com.blog.post.bo.PostImageBO;
+import com.blog.post.domain.PostImage;
+import com.blog.post.entity.PostEntity;
 import com.blog.user.bo.UserBO;
 import com.blog.user.entity.UserEntity;
 
@@ -19,6 +23,12 @@ public class FollowBO {
 	
 	@Autowired
 	private UserBO userBO;
+	
+	@Autowired
+	private PostBO postBO;
+	
+	@Autowired
+	private PostImageBO postImageBO;
 	
 	
 	// follow insert -> 팔로우 요청 대입
@@ -72,9 +82,25 @@ public class FollowBO {
 //			followView.setFollowCount(followCount);
 //			
 			
+			//following한 그 사람의 글 가져오는 로직
+			int getUser = user.getId();
+			List<PostEntity> post = postBO.getPostEntityListByUserId(getUser);
+			followView.setPost(post);
+			
+			// following 한 그 사람의 이미지 가져오는 로직
+			int getImage = 0;
+			List<PostImage> postImageList = null;
+			for (int i = 0; i < post.size(); i++) {
+				getImage = post.get(i).getId(); // 글번호 저장
+				postImageList = postImageBO.selectImageUrlListByPostId(getImage); // 글번호로 이미지 가져오기
+			}
+			followView.setPostImage(postImageList);
+			
 			
 			followViewList.add(followView);
 		}
+		
+		
 		return followViewList;
 	}
 

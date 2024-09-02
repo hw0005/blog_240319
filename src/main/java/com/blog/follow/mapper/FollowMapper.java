@@ -32,7 +32,7 @@ public interface FollowMapper {
 			@Param("id") int id, 
 			@Param("followStatus") String followStatus);
 	
-//	public List<Follow> selectFollowListByLoginId(String followingUserLoginId);
+	public List<Follow> selectFollowListByLoginId(String followingUserLoginId);
 
 	public Follow selectFollower(
 			@Param("follower") String follower,
