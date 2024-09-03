@@ -13,7 +13,7 @@
 		FROM
 			`follow`
 		WHERE
-			`followingUserLoginId` = #{followingUserLoginId}
+			`followerUserLoginId` = #{followerUserLoginId}
  	</select>
  	
  	<select id="selectFollower" parameterType="map" resultType="com.blog.follow.domain.Follow">

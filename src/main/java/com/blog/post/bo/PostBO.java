@@ -1,7 +1,5 @@
 package com.blog.post.bo;
 
-import java.awt.Image;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,8 +42,8 @@ public class PostBO {
 		return postRepository.findByOrderByIdDesc();
 	}
 	
-	public List<PostEntity> getPostEntityListByUserId(int id) {
-		return postRepository.findByOrderByUserIdDesc();
+	public List<PostEntity> getPostEntityListByUserId(int userId) {
+		return postRepository.findByUserIdOrderByUserIdDesc(userId);
 	}
 	
 	public void addPost(int userId, String userLoginId, String subject, String content, List<MultipartFile> file) {

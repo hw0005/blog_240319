@@ -12,4 +12,6 @@ public interface PostRepository extends JpaRepository<PostEntity, Integer> {
 	
 	public List<PostEntity> findByOrderByUserIdDesc();
 
+	public List<PostEntity> findByUserIdOrderByUserIdDesc(int userId);
+
 }

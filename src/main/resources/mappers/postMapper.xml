@@ -42,7 +42,7 @@
 	 		FROM
 	 			`image`
 	 		WHERE
-	 			`id` = #{id}
+	 			`postId` = #{postId}
  	</select>
  
  

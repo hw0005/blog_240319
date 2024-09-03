@@ -31,6 +31,7 @@ public class FollowBO {
 	private PostImageBO postImageBO;
 	
 	
+	
 	// follow insert -> 팔로우 요청 대입
 	public void addFollower(String followerUserLoginId, String followingUserLoginId, String followStatus) {
 		followMapper.insertFollower(followerUserLoginId, followingUserLoginId, followStatus);
@@ -69,7 +70,7 @@ public class FollowBO {
 			followView.setFollow(follow);
 			
 			// 일단 가져오자 팔로우요청 사람이든 팔로우한 사람이든
-			UserEntity user = userBO.getUserEntityByLoginId(follow.getFollowerUserLoginId()); // 팔로우 요청한 사람들의 로그인 아이디
+			UserEntity user = userBO.getUserEntityByLoginId(follow.getFollowingUserLoginId()); // 팔로우 요청한 사람들의 로그인 아이디
 			followView.setUser(user);
 			
 			//follow요청 개수
@@ -82,10 +83,9 @@ public class FollowBO {
 //			followView.setFollowCount(followCount);
 //			
 			
-			//following한 그 사람의 글 가져오는 로직
+			//following한 그 사람의 글 가져오는 로직, 여기서 구분해야 함
 			int getUser = user.getId();
 			List<PostEntity> post = postBO.getPostEntityListByUserId(getUser);
-			followView.setPost(post);
 			
 			// following 한 그 사람의 이미지 가져오는 로직
 			int getImage = 0;
@@ -94,7 +94,13 @@ public class FollowBO {
 				getImage = post.get(i).getId(); // 글번호 저장
 				postImageList = postImageBO.selectImageUrlListById(getImage); // 글번호로 이미지 가져오기
 			}
+			
+			// 포스트랑 포스트이미지 저장
+			followView.setPost(post);
 			followView.setPostImage(postImageList);
+//			//만약 팔로잉의 findUser(팔로잉 한 사람의 아이디)와 followinUserLoginId와
+//			if (user.getLoginId() != followingUserLoginId) {
+//			}
 			
 			
 			followViewList.add(followView);
