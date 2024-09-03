@@ -31,6 +31,19 @@
  			`postId` = #{postId}
  	</select>
  	
+ 	<select id="selectImageUrlListById" parameterType="int" resultType="com.blog.post.domain.PostImage">
+	 	SELECT
+	 			`id`
+				, `userId`
+				, `postId`
+				, `imageUrl`
+				, `createdAt`
+				, `updatedAt`
+	 		FROM
+	 			`image`
+	 		WHERE
+	 			`id` = #{id}
+ 	</select>
  
  
  	<insert id="insertImage" parameterType="map">

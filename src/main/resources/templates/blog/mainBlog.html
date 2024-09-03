@@ -124,7 +124,7 @@
 					
 						<!-- 글쓴이, 더보기(삭제) -->
 						<div class="p-2 d-flex justify-content-between">
-							<span class="font-weight-bold">글쓴이</span>
+							<span class="font-weight-bold" th:text="${followView.user.loginId}">글쓴이</span>
 						</div>
 						
 						<!-- 본문 이미지 -->
@@ -154,9 +154,9 @@
 							</div>
 						</div>
 						<!-- 글 -->
-						<div class="card-post m-3">
-							<span class="font-weight-bold">글쓴이</span>
-							<span>글 내용</span>
+						<div class="card-post m-3" th:each="post : ${followView.post}">
+							<span class="font-weight-bold" th:text="${followView.user.loginId}">글쓴이</span>
+							<span th:if="${session.userLoginId != followView.user.loginId}" th:text="${post.content}">글 내용</span>
 						</div>
 					</div> <!-- card 끝 -->	
 				</div> <!-- following blog box 끝 -->

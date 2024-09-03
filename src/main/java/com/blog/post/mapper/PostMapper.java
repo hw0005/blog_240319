@@ -26,4 +26,6 @@ public interface PostMapper {
 	// 이미지 삭제
 	public void deleteImageUrlListByPostId(int postId);
 	
+	public List<PostImage> selectImageUrlListById(int id);
+	
 }

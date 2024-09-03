@@ -21,6 +21,10 @@ public class PostImageBO {
 		return postMapper.selectImageUrlByPostId(postId);
 	}
 	
+	public List<PostImage> selectImageUrlListById(int id) {
+		return postMapper.selectImageUrlListById(id);
+	}
+	
 	// 이미지 추가
 	public void addImage(int userId, int postId, String imageUrl) {
 		postMapper.insertImage(userId, postId, imageUrl);

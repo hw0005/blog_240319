@@ -92,7 +92,7 @@ public class FollowBO {
 			List<PostImage> postImageList = null;
 			for (int i = 0; i < post.size(); i++) {
 				getImage = post.get(i).getId(); // 글번호 저장
-				postImageList = postImageBO.selectImageUrlListByPostId(getImage); // 글번호로 이미지 가져오기
+				postImageList = postImageBO.selectImageUrlListById(getImage); // 글번호로 이미지 가져오기
 			}
 			followView.setPostImage(postImageList);
 			
