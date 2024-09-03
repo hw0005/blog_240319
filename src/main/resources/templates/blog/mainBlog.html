@@ -37,9 +37,10 @@
 	<!-- 내 글 화면 -->
 	<div>
 	<h3><a href="/blog/my-blog-view">내가 쓴 글</a></h3>
-	<div class="d-flex justify-content-center" th:each="cardView : ${cardViewList}">
-		<div class="my-blog-box" th:if="${session.userId == cardView.post.userId}">
+	<div class="d-flex justify-content-center">
+		<div class="my-blog-box">
 			<!-- 글 카드 시작 -->
+			<th:block th:each="cardView : ${cardViewList}" th:if="${session.userId == cardView.post.userId}">
 			<div class="card border rounded mt-3">
 				<!-- 글 제목 -->
 				<div class="p-2 d-flex">
@@ -105,6 +106,7 @@
 		  </div>
 		</div> <!-- 모달 끝 -->
 			</div> <!-- card 끝 -->	
+			</th:block>
 		</div> <!-- my blog box 끝 -->
 		</div>
 		</div>
