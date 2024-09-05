@@ -108,6 +108,7 @@ public class FollowBO {
 				
 				
 				//follow요청 개수
+				//수정
 //				List<Follow> followCountList = followMapper.selectFollowerListCountById(follow.getId(), follow.getFollowStatus()); // 팔로우 요청한 사람들의 로그인 아이디
 //				int followCount = 0;
 //				for (Follow followC : followCountList) {
