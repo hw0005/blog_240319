@@ -14,13 +14,13 @@ footer {height:100px;}
 .write-box {width:600px;}
 
 
-.my-blog-box {width:810px; min-height:1000px; background-color: #808080;}
-.following-blog-box {width:810px; min-height:1000px; background-color: #00ff00;}
+.my-blog-box {width:810px; min-height:1000px;}
+.following-blog-box {width:810px; min-height:1000px;}
 .file-upload-box {min-height:50px;}
 #img {width:810px; height:500px; overflow:hidden;}
 
 .search-box {width:750px; height:86px; background-color: #D9D9D9;}
-.search-result-box {width:750px; min-height:700px; background-color: rgb(128, 255, 128);}
+.search-result-box {width:750px; min-height:700px;}
 
-.follow-request-box {width:750px; min-height:700px; background-color: #D9D9D9;}
+.follow-request-box {width:750px; min-height:700px;}
 

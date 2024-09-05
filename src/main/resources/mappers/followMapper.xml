@@ -31,6 +31,21 @@
 			`followingUserLoginId` = #{following}
  	</select>
  	
+ 	<select id="selectFollowerListCountById" parameterType="map" resultType="com.blog.follow.domain.Follow">
+	 	SELECT
+ 			`id`
+			, `followerUserLoginId`
+			, `followingUserLoginId`
+			, `followStatus`
+			, `createdAt`
+		FROM
+			`follow`
+		WHERE
+			`id` = #{id}
+		AND
+			`followStatus` = #{followStatus}
+ 	</select>
+ 	
  	
  	
  	<!-- 팔로우 요청 -->

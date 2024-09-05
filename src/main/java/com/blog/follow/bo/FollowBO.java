@@ -6,9 +6,12 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.blog.comment.bo.CommentBO;
+import com.blog.comment.domain.CommentView;
 import com.blog.follow.domain.Follow;
 import com.blog.follow.domain.FollowView;
 import com.blog.follow.mapper.FollowMapper;
+import com.blog.like.bo.LikeBO;
 import com.blog.post.bo.PostBO;
 import com.blog.post.bo.PostImageBO;
 import com.blog.post.domain.PostImage;
@@ -29,6 +32,12 @@ public class FollowBO {
 	
 	@Autowired
 	private PostImageBO postImageBO;
+	
+	@Autowired
+	private CommentBO commentBO;
+	
+	@Autowired
+	private LikeBO likeBO;
 	
 	
 	
@@ -64,46 +73,67 @@ public class FollowBO {
 		
 		
 		for (Follow follow : followList) {
-			FollowView followView = new FollowView();
-			
-			// follow 버튼을 누른(요청) 사람들의 리스트 
-			followView.setFollow(follow);
 			
 			// 일단 가져오자 팔로우요청 사람이든 팔로우한 사람이든
-			UserEntity user = userBO.getUserEntityByLoginId(follow.getFollowingUserLoginId()); // 팔로우 요청한 사람들의 로그인 아이디
-			followView.setUser(user);
+			UserEntity user = userBO.getUserEntityByLoginId(follow.getFollowingUserLoginId()); // 팔로우 받은 상대방
 			
-			//follow요청 개수
-		
-//			List<Follow> followCountList = followMapper.selectFollowerListCountById(follow.getId(), follow.getFollowStatus()); // 팔로우 요청한 사람들의 로그인 아이디
-//			for (int i = 0; i < followCountList.size(); i++) {
-//				int followCount = followCountList.get(i).getFollowStatus();
-//			}
-//			
-//			followView.setFollowCount(followCount);
-//			
+			UserEntity follower = userBO.getUserEntityByLoginId(follow.getFollowerUserLoginId()); // 나
+			
+			
+			
 			
 			//following한 그 사람의 글 가져오는 로직, 여기서 구분해야 함
 			int getUser = user.getId();
-			List<PostEntity> post = postBO.getPostEntityListByUserId(getUser);
+			List<PostEntity> postList = postBO.getPostEntityListByUserId(getUser);
+			
 			
 			// following 한 그 사람의 이미지 가져오는 로직
 			int getImage = 0;
 			List<PostImage> postImageList = null;
-			for (int i = 0; i < post.size(); i++) {
-				getImage = post.get(i).getId(); // 글번호 저장
+			
+			for (int i = 0; i < postList.size(); i++) {
+				FollowView followView = new FollowView();
+				
+				followView.setUser(user);
+				
+				// follow 버튼을 누른(요청) 사람들의 리스트 
+				followView.setFollow(follow);
+				
+				followView.setPost(postList.get(i));
+				
+				// 포스트랑 포스트이미지 저장
+				getImage = postList.get(i).getId(); // 글번호 저장
 				postImageList = postImageBO.selectImageUrlListById(getImage); // 글번호로 이미지 가져오기
+				followView.setPostImage(postImageList);
+				
+				
+				//follow요청 개수
+//				List<Follow> followCountList = followMapper.selectFollowerListCountById(follow.getId(), follow.getFollowStatus()); // 팔로우 요청한 사람들의 로그인 아이디
+//				int followCount = 0;
+//				for (Follow followC : followCountList) {
+//					if (followCountList.get(i).getFollowStatus() == "팔로우 요청 대기" && follow.getFollowerUserLoginId() == followingUserLoginId) {
+//							followCount += followC.getId();
+//					}
+//				}
+//				followView.setFollowCount(followCount);
+				
+				// 댓글 갯수
+				int commentCount = commentBO.getCommentCountByPostId(postList.get(i).getId());
+				followView.setCommentCount(commentCount);
+				
+				// 댓글 나오기
+				List<CommentView> commetViewList = commentBO.generateCommentViewListByPostId(postList.get(i).getId());
+				followView.setCommentList(commetViewList);
+				
+				// 좋아요 갯수
+				int likeCount = likeBO.getLikeCountByPostId(postList.get(i).getId());
+				followView.setLikeCount(likeCount);
+				
+				// 좋아요 채움여부
+				followView.setFilledLike(likeBO.filledLikeByPostIdUserId(postList.get(i).getId(), follower.getId()));
+				followViewList.add(followView);
 			}
 			
-			// 포스트랑 포스트이미지 저장
-			followView.setPost(post);
-			followView.setPostImage(postImageList);
-//			//만약 팔로잉의 findUser(팔로잉 한 사람의 아이디)와 followinUserLoginId와
-//			if (user.getLoginId() != followingUserLoginId) {
-//			}
-			
-			
-			followViewList.add(followView);
 		}
 		
 		

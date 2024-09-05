@@ -22,8 +22,8 @@ public class FileManagerService {
 	//public static final String FILE_UPLOAD_PATH = "D:\\윤현우\\7_PROJECT\\blog\\BLOG_WORKSPACE\\images/";
 	
 	//내 노트북 이미지 저장 경로
-	//public static final String FILE_UPLOAD_PATH ="D:\\윤현우\\7_PROJECT\\BLOG\\workspace\\image/";
-	public static final String FILE_UPLOAD_PATH ="/home/ec2-user/images/"; // 리눅스 경로
+	public static final String FILE_UPLOAD_PATH ="D:\\윤현우\\7_PROJECT\\BLOG\\workspace\\image/";
+	//public static final String FILE_UPLOAD_PATH ="/home/ec2-user/images/"; // 리눅스 경로
 	
 	// 글 업로드
 	public List<String> uploadFileList(List<MultipartFile> file, String userLoginId) {

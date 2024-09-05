@@ -31,78 +31,336 @@
 	</div>
 	
 	<!-- 글 -->
-	<div class="d-flex justify-content-center my-5">
-		<div class="following-blog-box">
-			<!-- 글 카드 시작 -->
-			<div class="card border rounded mt-3">
-				<div class="p-2 d-flex">
-					<span class="font-weight-bold">글제목</span>
+			<!-- 팔로잉 글 화면 -->
+		<div>
+				<div class="following-blog-box d-flex flex-column align-items-center mx-auto">
+				<div class="d-flex justify-content-start w-100">
+					<h3><a href="/blog/following-blog-view">팔로잉의 글</a></h3>
 				</div>
-				<!-- 글쓴이, 더보기(삭제) -->
-				<div class="p-2 d-flex justify-content-between">
-					<span class="font-weight-bold">글쓴이</span>
-				</div>
-				
-				<!-- 본문 이미지 -->
-				<div class="card-img">
-					<img class="w-100" alt="본문 이미지" src="https://cdn.pixabay.com/photo/2022/03/06/06/39/search-7050945_960_720.png">
-				</div>
-				
-				<!-- 글 -->
-				<div class="card-post m-3">
-					<span class="font-weight-bold">글쓴이</span>
-					<span>글 내용</span>
-				</div>
-			</div> <!-- 글 card 끝 -->
-
-			
-			<!-- 좋아요, 댓글 갯수 알려주는 카드 시작-->
-			<div class="card border rounded mt-3 d-flex">
-				<!-- 좋아요 -->
-				<div class="card-like m-3">
-					<a href="#" class="like-btn">
-						<img src="https://www.iconninja.com/files/214/518/441/heart-icon.png" width="18" height="18" alt="empty heart">
-						<img src="https://cdn.pixabay.com/photo/2016/04/24/05/52/heart-1348868_1280.png" width="18" height="18" alt="filled heart">
-					</a>
-						<span>좋아요 n개</span>
-					<!-- 댓글 -->
-					<img src="https://cdn.pixabay.com/photo/2016/02/02/05/53/button-1174805_960_720.png" width="18" height="18"><span>댓글 n개</span>
-				</div>
-			</div> <!-- 좋아요, 댓글 개수 카드 끝 -->
-			
-			<!-- 댓글 목록 카드 시작 -->
-			<div class="card border rounded mt-3">
-				<!-- 댓글 제목 -->
-				<div class="card-comment-title border-bottom">
-					<div class="font-weight-bold ml-3 mb-1">댓글</div>
-				</div>
-				
-				<!-- 댓글 목록 -->
-				<div class="card-comment-list m-2">
-					<!-- 댓글들 -->
-					<div class="card-comment m-1">
-						<span class="font-weight-bold">댓글쓴이</span>
-						<span>댓글 내용</span>
-						
-						<!-- 댓글 삭제(자신의 댓글만 가능) -->
-						<a href="#" class="comment-del-btn">
-							<img src="https://www.iconninja.com/files/603/22/506/x-icon.png" width="10" height="10">
-						</a>
-					</div>
+					<!-- [[${followViewList}]] -->
+					<!-- 글 카드 시작 -->
+					<th:block th:each="followView : ${followViewList}">
 					
-					<!-- 댓글 쓰기 -->
-					<div class="comment-write d-flex border-top mt-2">
-						<input type="text" class="comment-input form-control border-0 mr-2" placeholder="댓글 달기">
-						<button type="button" class="comment-btn btn btn-light col-1">게시</button>
-					</div>
-				</div> <!-- 댓글 끝 -->
-			</div> <!-- 댓글 카드 끝 -->
-		</div> <!-- following-blog-box 끝 -->
-	</div>
+					<div class="card border rounded mt-3" th:if="${#arrays.length(followView.post) > 0}">
+						<!-- [[${followView}]] -->
+					
+						<!-- 글 제목 -->
+						<div class="p-2 d-flex">
+							<span class="font-weight-bold" th:text="${followView.post.subject}">글제목</span>
+						</div>
+					
+						<!-- 글쓴이, 더보기(삭제) -->
+						<div class="p-2 d-flex justify-content-between">
+							<span class="font-weight-bold" th:text="${followView.user.loginId}">글쓴이</span>
+						</div>
+						
+						<!-- 본문 이미지 -->
+						<div class="d-flex w-100">
+							<div>
+								<div th:id="|post${followView.post.id}|" class="carousel slide card-img" data-bs-ride="carousel" data-bs-touch="false" data-bs-interval="false">
+									  <div class="carousel-inner">
+										    <!-- 이미지 애니메이션 관련한 라이브러리 찾아보기(자바스크립트) -->
+									    <th:block th:each="postImage, a : ${followView.postImage}">
+									    	<!-- th:classAppend란 조건부로 태그에 class를 설정할 수 있는 문법이다. 기존에 있는 클래스들과 함께 쓰일 수 있으며, 새로운 클래스를 추가하는 데 사용된다. -->
+									    	<!-- 이를 삼항연산자(boolean)로 안의 태그에 인덱스대로 불러오기 'active'는 말 그대로 구현 아니라면 나머지 코드 진행 -->
+										    <div class="carousel-item" th:classappend="${a.index == 0} ? 'active' : null">
+											    <img id="img" th:src="${postImage.imageUrl}" class="d-block" alt="블로그 사진">
+										    </div>
+									    </th:block>
+									  </div>
+									  <!-- th:data-target의 #은 id jQuery문법 -->
+									  <button class="carousel-control-prev" type="button" th:data-target="|#post${followView.post.id}|" data-slide="prev">
+									  	<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+										<span class="sr-only">Previous</span>
+									  </button>
+									  <button class="carousel-control-next" type="button" th:data-target="|#post${followView.post.id}|" data-slide="next">
+									    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+									    <span class="sr-only">Next</span>
+									  </button>
+								</div>
+							</div>
+						</div>
+						<!-- 글 -->
+						<div class="card-post m-3">
+							<span class="font-weight-bold" th:text="${followView.user.loginId}">글쓴이</span>
+							<span th:if="${session.userLoginId != followView.user.loginId}" th:text="${followView.post.content}">글 내용</span>
+						</div>
+						<!-- 좋아요, 댓글 갯수 알려주는 카드 시작-->
+						<div class="card border rounded mt-3 d-flex">
+							<!-- 좋아요 -->
+							<div class="card-like m-3">
+								<a href="#" class="like-btn" th:data-post-id="${followView.post.id}">
+									<img th:if="${followView.filledLike == false}" src="https://www.iconninja.com/files/214/518/441/heart-icon.png" width="18" height="18" alt="empty heart">
+									<img th:unless="${followView.filledLike == false}"src="https://cdn.pixabay.com/photo/2016/04/24/05/52/heart-1348868_1280.png" width="18" height="18" alt="filled heart">
+								</a>
+									<span th:text="|좋아요 ${followView.likeCount}개|"></span>
+								<!-- 댓글 -->
+								<img src="https://cdn.pixabay.com/photo/2016/02/02/05/53/button-1174805_960_720.png" width="18" height="18"><span th:text="|댓글 ${followView.commentCount}개|"></span>
+							</div>
+						</div> <!-- 좋아요, 댓글 개수 카드 끝 -->
+						
+						<!-- 댓글 목록 카드 시작 -->
+						<div class="card border rounded mt-3">
+							<!-- 댓글 제목 -->
+							<div class="card-comment-title border-bottom">
+								<div class="font-weight-bold ml-3 mb-1">댓글</div>
+							</div>
+							
+							<!-- 댓글 목록 -->
+							<div class="card-comment-list m-2">
+								<!-- 댓글들 -->
+								<div class="card-comment m-1" th:each="commentView : ${followView.commentList}">
+									<span class="font-weight-bold" th:text="${commentView.user.name}">댓글쓴이</span>
+									<span th:text="${commentView.comment.content}">댓글 내용</span>
+									
+									<!-- 댓글 삭제(자신의 댓글만 가능) -->
+									<a href="#" class="comment-del-btn" th:if="${session.userId == commentView.comment.userId}" th:data-comment-id="${commentView.comment.id}">
+										<img src="https://www.iconninja.com/files/603/22/506/x-icon.png" width="10" height="10">
+									</a>
+								</div>
+								
+								<!-- 댓글 쓰기 -->
+								<div class="comment-write d-flex border-top mt-2">
+									<input type="text" class="comment-input form-control border-0 mr-2" placeholder="댓글 달기">
+									<button type="button" class="comment-btn btn btn-light col-1" th:data-post-id="${followView.post.id}" th:data-user-id="${session.userId}">게시</button>
+								</div>
+							</div> <!-- 댓글 끝 -->
+						</div> <!-- 댓글 카드 끝 -->
+					</div> <!-- card 끝 -->	
+			</th:block>
+				</div> <!-- following blog box 끝 -->
+			</div>
 </section>
 
 <th:block layout:fragment="script">
     <script>
-		
+		$(document).ready(function(e) {
+			//alert("응");
+			// 이미지 파일을 담아놓을 배열
+			let inputFileList = new Array();
+			
+			// 이미지 a태그 => 숨겨져 있는 id="file"움직임
+			$("#fileUploadBtn").on('click', function(e) {
+				e.preventDefault();
+				//alert("클릭");
+				$("#file").click(); // file 클릭
+			}); // 파일업로드 버튼 = id="file" 끝
+			
+			
+			// 파일이 선택될 때 1. 유효성 체크 2. 파일명 노출
+			$("#file").on('change', function(e) {
+				// 취소 눌렀을 때 초기화
+				let file = e.target.files[0];
+				if (file == null) {
+					alert("선택 취소를 눌렀습니다. 이미지를 다시 선택하여 주십시오.");
+					$("#file").val("");
+					$("#fileName").text("");
+					return;
+				}
+				
+				// 파일 잘 오는지 확인
+				let fileName = e.target.files[0].name;
+				//console.log(fileName);
+				
+				// 1. 확장자 validation
+				let ext = fileName.split(".").pop().toLowerCase();
+				//console.log(ext);
+				
+				if (ext != "png" && ext != "gif" && ext != "jpg") {
+					alert("이미지만 업로드할 수 있습니다.");
+					$("#file").val(""); // 파일 태그에 올라온 것 제거
+					$("#fileName").text(""); // 보여지고 있는 파일명 초기화
+					return;
+				}
+				
+				// 2. 파일명 노출
+				$("#fileName").text(fileName);
+				
+				// 3. 이미지 파일 선택 최대 5개
+				let files = e.target.files;
+				let filesArr = Array.prototype.slice.call(files);
+				console.log(files);
+				console.log(filesArr);
+				
+				// validation
+				if (filesArr.length > 5) {
+					alert("이미지는 최대 5개까지 업로드 가능합니다.");
+					$("#file").val(""); // 파일 태그에 올라온 것 제거
+					$("#fileName").text(""); // 보여지고 있는 파일명 초기화
+					return;
+				}
+				if (files.length <= 5) {
+					$("#fileName").text(fileName + " 외 " + (files.length - 1) + "개");
+				}
+				
+				filesArr.forEach(function(f) {
+					inputFileList.push(f);	
+				}); // 파일 가져오기 배열 끝
+				
+				
+			}); // 파일 선택될 때 끝
+			
+			// 글쓰기
+			$("#writeBtn").on('click', function() {
+				//alert("응");
+				
+				let subject = $("#writeTextAreaSubject").val().trim();
+				let content = $("#writeTextAreaContent").val().trim();
+				let file = $("#file").val();
+				//console.log(subject);
+				//console.log(content);
+				//console.log(file); // C:\fakepath\pngtree-vector-chat-icon-png-image_322158.jpg
+				
+				if (!subject) {
+					alert("제목을 입력하세요");
+					return;
+				}
+				if (!content) {
+					alert("내용을 입력하세요");
+					return;
+				}
+				if (!file) {
+					alert("이미지를 선택하세요");
+					return;
+				}
+				
+				// 파일이 업로드 된 경우 확장자 체크
+				let ext = file.split(".").pop().toLowerCase();
+				//console.log(ext);
+				if ($.inArray(ext, ['gif', 'png', 'jpg', 'jpeg']) == -1) {
+					alert("gif, png, jpg, jpeg 파일만 업로드 할 수 있습니다.");
+					$("#file").val(""); // 파일을 비운다.
+					return;
+				}
+				
+				// 폼 태그를 자바스크립트에서 하기
+				let formData = new FormData();
+				formData.append("subject", subject);
+				formData.append("content", content);
+				//formData.append("file", $('#file')[0].files[0]); //$('#file')[0]은 첫번째 input file 태그를 의미, files[0]는 업로드된 첫번째 파일
+				
+				console.log(inputFileList);
+				for (let i = 0; i < inputFileList.length; i++) {
+				　　　　formData.append("file", inputFileList[i]);  //배열에서 이미지들을 꺼내 폼 객체에 담는다.
+				}
+				
+				
+				// ajax에 formData 전송
+				$.ajax({
+					type: "post"
+					, url: "/post/create"
+					, data: formData
+					, enctype: "multipart/form-data"
+					, processData: false
+					, contentType: false
+					, success:function(data) {
+						if (data.code == 200) {
+							location.reload();
+						} else if (data.code == 403) { // 비로그인일 때
+							location.href="/user/sign-in-view";
+						} else {
+							alert(data.error_message);
+						}
+					}
+					, error:function(e) {
+						alert("글 업로드에 실패했습니다.");
+					}
+				}); // ajax 끝
+			}); // 글쓰기 버튼 끝
+			
+			// 댓글 게시
+			$(".comment-btn").on('click', function() {
+				let userId = $(this).data("user-id");
+				if (!userId) {
+					// 비로그인
+					alert("로그인을 해주세요.");
+					location.href="/user/sign-in-view";
+					return;
+				}
+				
+				let postId = $(this).data("post-id");
+				//alert(postId);
+				
+				let content = $(this).siblings("input").val().trim();
+				console.log(content);
+				
+				if (!content) {
+					alert("댓글 내용을 입력하세요.");
+					return;
+				}
+				
+				$.ajax({
+					type:"post"
+					, url:"/comment/create"
+					, data:{"postId":postId, "content":content}
+					, success:function(data) {
+						if(data.code == 200) {
+							location.reload(true);
+						} else if (data.code == 403) {
+							alert(data.error_message);
+							loaction.href="/user/sign-in-view";
+						} else {
+							alert(data.error_message);
+						}
+					}
+					, error:function(e) {
+						alert("댓글 쓰기에 실패했습니다.");
+					}
+					
+				});
+			}); // 댓글 게시 버튼 끝
+			
+			// 댓글 지우기 버튼
+			$(".comment-del-btn").on('click', function(e) {
+				e.preventDefault();
+				
+				let commentId = $(this).data("comment-id");
+				//alert(commentId);
+				
+				$.ajax({
+					type:"DELETE"
+					, url:"/comment/delete"
+					, data:{"commentId":commentId}
+					, success:function(data) {
+						if (data.code == 200) {
+							location.reload(true);
+						} else {
+							alert(data.error_message);
+						}
+					}
+					, error:function(e) {
+						alert("댓글을 삭제하는데 실패했습니다.");
+					}
+				}); // ajax끝
+			}); // 댓글 지우기 버튼 끝
+			
+			// 좋아요
+			$(".like-btn").on('click', function(e) {
+				//alert("응");
+				e.preventDefault();
+				
+				let postId = $(this).data("post-id");
+				//console.log(postId);
+				
+				$.ajax({
+					url:"/like/" + postId
+					, success:function(data) {
+						if(data.code == 200) {
+							location.reload();
+						} else if (data.code == 500) {
+							// 비로그인 시 로그인 화면으로 이동
+							alert(data.error_message);
+							location.href="/user/sign-in-view";
+						}
+					}
+					, error:function(e) {
+						alert("좋아요를 하는데 실패했습니다.");
+					}
+				}); // ajax끝
+			}); // 좋아요 끝
+			
+			
+			
+		}); //document끝
     </script>
 </th:block>

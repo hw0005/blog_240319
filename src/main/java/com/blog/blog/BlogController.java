@@ -57,8 +57,15 @@ public class BlogController {
 	}
 	
 	@GetMapping("/following-blog-view")
-	public String followingBlogView() {
+	public String followingBlogView(Model model,
+			HttpSession session) {
+		Integer userId = (Integer)session.getAttribute("userId");
+		String userLoginId = (String)session.getAttribute("userLoginId");
 		
+
+		
+		List<FollowView> followViewList = followBO.generateFollowViewListByLoginId(userLoginId);
+		model.addAttribute("followViewList" , followViewList);
 		
 		return "blog/followingBlog";
 	}
