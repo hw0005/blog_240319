@@ -11,8 +11,6 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.blog.post.domain.PostImage;
-
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
