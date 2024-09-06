@@ -16,6 +16,20 @@
 			`followerUserLoginId` = #{followerUserLoginId}
  	</select>
  	
+ 	<select id="selectFollowingListByUserLoginId" parameterType="String" resultType="com.blog.follow.domain.Follow">
+ 		SELECT
+ 			`id`
+			, `followerUserLoginId`
+			, `followingUserLoginId`
+			, `followStatus`
+			, `createdAt`
+		FROM
+			`follow`
+		WHERE
+			`followingUserLoginId` = #{followingUserLoginId}
+ 	</select>
+ 	
+ 	
  	<select id="selectFollower" parameterType="map" resultType="com.blog.follow.domain.Follow">
  		SELECT
  			`id`
