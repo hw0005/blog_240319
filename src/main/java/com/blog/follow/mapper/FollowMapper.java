@@ -27,13 +27,15 @@ public interface FollowMapper {
 	public void deleteFollower(
 			@Param("followerUserLoginId") String followerUserLoginId,
 			@Param("followingUserLoginId") String followingUserLoginId);
-	
-	public List<Follow> selectFollowerListCountById(
-			@Param("id") int id, 
-			@Param("followStatus") String followStatus);
+//	
+//	public List<Follow> selectFollowerListCountById(
+//			@Param("id") int id, 
+//			@Param("followStatus") String followStatus);
 	
 	public List<Follow> selectFollowListByLoginId(String followerUserLoginId);
-
+	
+	public List<Follow> selectFollowingListByUserLoginId(String followingUserLoginId);
+	
 	public Follow selectFollower(
 			@Param("follower") String follower,
 			@Param("following") String following);

@@ -24,7 +24,7 @@ public class FollowController {
 			HttpSession session) {
 		String userLoginId = (String)session.getAttribute("userLoginId");
 		
-		List<FollowView> followViewList = followBO.generateFollowViewListByLoginId(userLoginId);
+		List<FollowView> followViewList = followBO.generateFollowingListByUserLoginId(userLoginId);
 		model.addAttribute("followViewList" , followViewList);
 		
 		return "follow/request";

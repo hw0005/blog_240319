@@ -57,14 +57,32 @@ public class FollowBO {
 		followMapper.deleteFollower(followerUserLoginId, followingUserLoginId);
 	}
 	
-	// follow generate
-	public List<Follow> generateFollowListByLoginId(String followingUserLoginId) { // 팔로우 요청한 사람으로 가져오기
+	// follow generate(1)
+	public List<FollowView> generateFollowingListByUserLoginId(String followingUserLoginId) { // 팔로우 요청한 사람으로 가져오기
+		List<FollowView> followViewList = new ArrayList<>(); 
 		
 		// follow 리스트 가져옴
-		return followMapper.selectFollowListByLoginId(followingUserLoginId);
+		List<Follow> followList = followMapper.selectFollowingListByUserLoginId(followingUserLoginId);
+		
+		for (Follow follow : followList) {
+			FollowView followView = new FollowView();
+			
+			// follow 가져오기
+			followView.setFollow(follow);
+			
+			
+		
+			followViewList.add(followView);
+		}
+		return followViewList;
 	}	
 	
-	// follow generate
+	
+	
+	
+	
+	
+	// follow generate(2)
 	public List<FollowView> generateFollowViewListByLoginId(String followingUserLoginId) { // 팔로우 요청한 사람으로 가져오기
 		List<FollowView> followViewList = new ArrayList<>(); 
 		
