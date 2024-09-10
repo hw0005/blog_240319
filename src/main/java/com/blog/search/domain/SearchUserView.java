@@ -22,7 +22,7 @@ public class SearchUserView {
 	// following true, followingApproved false-> 팔로우 요청대기 버튼, 몇 명 팔로우 요청이 들어왔는지
 	// following true, followingApproved true -> 글 보기 버튼
 	
-	private Boolean followingApproved; //null 가능
+	private Boolean followingApproved;
 	
 	
 }
